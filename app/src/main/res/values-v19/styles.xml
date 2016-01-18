@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <style name="_WaveTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+                <!-- Customize your theme here. -->
+                <item name="colorPrimary">@color/colorPrimary</item>
+                <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+                <item name="colorAccent">@color/colorAccent</item>
+
+                <item name="android:editTextBackground">@drawable/wavetheme_edit_text_holo_light
+                </item>
+                <item name="android:buttonStyle">@style/ButtonWaveTheme</item>
+                <item name="android:imageButtonStyle">@style/ImageButtonWaveTheme</item>
+                <item name="android:windowTranslucentStatus">true</item>
+
+        </style>
+</resources>
