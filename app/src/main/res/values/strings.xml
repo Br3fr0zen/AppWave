@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Yep</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="LoginBtn">Login</string>
+    <string name="SignUp">Sign Up</string>
+    <string name="titulo">Yep</string>
+    <string name="subtitulo">Wathever</string>
+    <string name="title">Wave</string>
+    <string name="subtitle">It\'s never late to say Hello!</string>
+</resources>
