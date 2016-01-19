@@ -8,11 +8,12 @@
                 <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
                 <item name="colorAccent">@color/colorAccent</item>
 
-                <item name="android:editTextBackground">@drawable/wavetheme_edit_text_holo_light
+                <item name="android:editTextBackground">@drawable/appwave_edit_text_holo_light
                 </item>
-                <item name="android:buttonStyle">@style/ButtonWaveTheme</item>
-                <item name="android:imageButtonStyle">@style/ImageButtonWaveTheme</item>
+                <item name="android:buttonStyle">@style/ButtonAppWave</item>
+                <item name="android:imageButtonStyle">@style/ImageButtonAppWave</item>
                 <item name="android:windowTranslucentStatus">true</item>
 
         </style>
+
 </resources>

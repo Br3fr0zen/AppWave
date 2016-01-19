@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_fill"
     tools:context="com.javierbravo.yep.LoginActivity">
 
     <ImageView
@@ -14,6 +13,29 @@
         android:layout_alignParentTop="true"
         android:scaleType="fitXY"
         android:src="@drawable/ola" />
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:text="@string/title"
+        android:textColor="#ff80c0"
+        android:textSize="70sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/subtitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titulo"
+        android:layout_centerHorizontal="true"
+        android:text="@string/subtitle"
+        android:textColor="#ff80c0"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -34,32 +56,23 @@
             android:id="@+id/UserMainField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="25dp"
-            android:layout_marginTop="25dp"
-            android:background="@android:color/white"
-            android:hint="User"
-            android:textColor="#ffffff"
-            android:textColorHint="#3676cd"
-            android:textSize="20dp" />
+            android:hint="@string/Username"
+            android:textColor="#ff3399"
+            android:textColorHint="#ff3399"
+            android:textSize="20sp"
+            android:drawable="@drawable/appwave_edit_text_holo_light"/>
 
         <EditText
             android:id="@+id/PasswordField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/UserMainField"
-            android:layout_marginBottom="25dp"
-            android:background="@android:color/white"
             android:ems="10"
-            android:hint="Password"
+            android:hint="@string/Password"
             android:inputType="textPassword"
-            android:textColor="#ffffff"
-            android:textColorHint="#2f70cb"
-            android:textSize="20dp" />
+            android:textColor="#ff3399"
+            android:textColorHint="#ff3399"
+            android:textSize="20sp"
+            android:drawable="@drawable/appwave_edit_text_holo_light"/>
 
     </LinearLayout>
 
@@ -75,9 +88,9 @@
         android:text="@string/LoginBtn"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textAlignment="center"
-        style="@style/ButtonWaveTheme" />
+        style="@style/ButtonAppWave" />
 
     <TextView
         android:id="@+id/SignUpText"
@@ -87,31 +100,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
         android:text="@string/SignUp"
-        android:textColor="#ffffff"
+        android:textColor="#ff80c0"
         android:textStyle="bold"
-        android:textSize="15dp" />
-
-    <TextView
-        android:id="@+id/titulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
-        android:text="@string/title"
-        android:textColor="#ffffff"
-        android:textSize="70dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/subtitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titulo"
-        android:layout_centerHorizontal="true"
-        android:text="@string/subtitle"
-        android:textColor="#ffffff"
-        android:textSize="20dp"
-        android:textStyle="bold"/>
+        android:textSize="15sp" />
 
 </RelativeLayout>

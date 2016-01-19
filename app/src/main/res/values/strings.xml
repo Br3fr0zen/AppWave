@@ -8,4 +8,7 @@
     <string name="subtitulo">Wathever</string>
     <string name="title">Wave</string>
     <string name="subtitle">It\'s never late to say Hello!</string>
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
+    <string name="Email">youremail@gmail.com</string>
 </resources>
