@@ -34,9 +34,6 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
 
-    /**
-     * They {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
 
     @Override

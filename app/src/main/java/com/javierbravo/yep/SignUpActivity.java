@@ -17,12 +17,12 @@ public class SignUpActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        ParseObject gameScore = new ParseObject("GameScore");
+        ParseObject user = new ParseObject("Users");
 
-        gameScore.put("score", 1337);
-        gameScore.put("playerName", "Sean Plott");
-        gameScore.put("cheatMode", false);
+        user.put("name", "Manu");
+        user.put("password", "1234");
+        user.put("email", "magno@hotmilio.com");
 
-        gameScore.saveInBackground();
+        user.saveInBackground();
     }
 }
