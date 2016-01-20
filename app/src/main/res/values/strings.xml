@@ -10,5 +10,5 @@
     <string name="subtitle">It\'s never late to say Hello!</string>
     <string name="Username">Username</string>
     <string name="Password">Password</string>
-    <string name="Email">youremail@gmail.com</string>
+    <string name="Email">email@gmail.com</string>
 </resources>

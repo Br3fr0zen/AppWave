@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/Username"
             android:textColor="#ff3399"
-            android:textColorHint="#ff3399"
+            android:textColorHint="#ff99cc"
             android:textSize="20sp"
             android:drawable="@drawable/appwave_edit_text_holo_light"/>
 
@@ -70,7 +70,7 @@
             android:hint="@string/Password"
             android:inputType="textPassword"
             android:textColor="#ff3399"
-            android:textColorHint="#ff3399"
+            android:textColorHint="#ff99cc"
             android:textSize="20sp"
             android:drawable="@drawable/appwave_edit_text_holo_light"/>
 
@@ -86,6 +86,7 @@
         android:layout_below="@+id/linearLayout"
         android:singleLine="false"
         android:text="@string/LoginBtn"
+        android:textColor="#0059b3"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:textSize="20sp"

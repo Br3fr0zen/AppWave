@@ -58,7 +58,7 @@
             android:id="@+id/usernameField"
             android:hint="@string/Username"
             android:textColor="#ff3399"
-            android:textColorHint="#ff3399"
+            android:textColorHint="#ff99cc"
             android:drawable="@drawable/appwave_edit_text_holo_light"/>
 
         <EditText
@@ -69,7 +69,7 @@
             android:id="@+id/passwordField"
             android:hint="@string/Password"
             android:textColor="#ff3399"
-            android:textColorHint="#ff3399"
+            android:textColorHint="#ff99cc"
             android:drawable="@drawable/appwave_edit_text_holo_light"/>
 
         <EditText
@@ -80,7 +80,7 @@
             android:id="@+id/emailField"
             android:hint="@string/Email"
             android:textColor="#ff3399"
-            android:textColorHint="#ff3399"
+            android:textColorHint="#ff99cc"
             android:drawable="@drawable/appwave_edit_text_holo_light"/>
         </LinearLayout>
 
@@ -94,10 +94,12 @@
         android:layout_below="@+id/linearLayout"
         android:singleLine="false"
         android:text="@string/SignUp"
+        android:textColor="#0059b3"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:textSize="20sp"
         android:textAlignment="center"
+        android:onClick="signUpClick()"
         style="@style/ButtonAppWave"/>
 
 </RelativeLayout>
