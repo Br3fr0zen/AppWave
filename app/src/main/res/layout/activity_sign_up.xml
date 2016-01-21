@@ -99,7 +99,6 @@
         android:layout_marginRight="30dp"
         android:textSize="20sp"
         android:textAlignment="center"
-        android:onClick="signUpClick()"
         style="@style/ButtonAppWave"/>
 
 </RelativeLayout>

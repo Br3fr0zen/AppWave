@@ -3,24 +3,19 @@ package com.javierbravo.yep;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private EditText username;
-    private EditText password;
-    private EditText email;
-    private String usr = "";
-    private String pass = "";
-    private String em = "";
-    protected TextView mLogInTextView;
+    protected EditText username, password, email;
+    protected Button btnSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +28,8 @@ public class SignUpActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.passwordField);
         email = (EditText) findViewById(R.id.emailField);
 
-        usr = username.getText().toString();
-        pass = password.getText().toString();
-        em = email.getText().toString();
-
-        mLogInTextView = (TextView) findViewById(R.id.signupButton);
-        mLogInTextView.setOnClickListener(new View.OnClickListener() {
+        btnSignUp = (Button) findViewById(R.id.signupButton);
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signUpClick();
@@ -47,24 +38,42 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     protected void signUpClick(){
-        ParseUser newUser = new ParseUser();
 
-        newUser.setUsername(usr);
-        newUser.setPassword(String.valueOf(pass));
-        newUser.setEmail(String.valueOf(em));
+        String usr = username.getText().toString().replace(" ", "");
+        String pass = password.getText().toString().replace(" ", "");
+        String em = email.getText().toString().replace(" ", "");
 
+        final ParseUser newUser = new ParseUser();
+
+        //Method to set data.
+        trimSpaces(newUser, usr, pass, em);
+
+        Log.d("prueba", "string:" + newUser.getUsername());
+        Log.d("prueba", "string:" + newUser.getEmail());
+
+        if(ParseUser.getCurrentUser()!=null) {
+            Log.d("prueba", "logueado con el usuario: usuario" + ParseUser.getCurrentUser().getUsername());
+            ParseUser.logOut();
+        }
         newUser.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
+            public void done(com.parse.ParseException e) {
                 if (e == null) {
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {
-                    Toast toast2 =
+                    Toast toast =
                             Toast.makeText(getApplicationContext(),
-                                    "Username or email already in use, please introduce a new one", Toast.LENGTH_SHORT);
-                    toast2.show();
+                                    "Sign up failed", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         });
+    }
+
+    protected ParseUser trimSpaces(ParseUser newUser, String usr, String pass, String em){
+        newUser.setUsername(usr);
+        newUser.setPassword(pass);
+        newUser.setEmail(em);
+        return newUser;
     }
 }
