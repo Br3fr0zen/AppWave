@@ -11,4 +11,11 @@
     <string name="Username">Username</string>
     <string name="Password">Password</string>
     <string name="Email">email@gmail.com</string>
+    <string name="empty_title">The following error has occurred: </string>
+    <string name="user_title">Invalid user: </string>
+    <string name="empty_field_message">One or more fields are empty</string>
+    <string name="email_fail_message">User is already being used, also make sure your email contains a valid format</string>
+
+
+
 </resources>

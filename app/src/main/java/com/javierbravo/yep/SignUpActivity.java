@@ -1,5 +1,7 @@
 package com.javierbravo.yep;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,13 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    public static final String EMAIL_VERIFICATION = "/^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$/";
     protected EditText username, password, email;
     protected Button btnSignUp;
 
@@ -39,17 +41,14 @@ public class SignUpActivity extends AppCompatActivity {
 
     protected void signUpClick(){
 
-        String usr = username.getText().toString().replace(" ", "");
-        String pass = password.getText().toString().replace(" ", "");
-        String em = email.getText().toString().replace(" ", "");
+        final String usr = username.getText().toString().replace(" ", "");
+        final String pass = password.getText().toString().replace(" ", "");
+        final String em = email.getText().toString().replace(" ", "");
 
         final ParseUser newUser = new ParseUser();
 
         //Method to set data.
         trimSpaces(newUser, usr, pass, em);
-
-        Log.d("prueba", "string:" + newUser.getUsername());
-        Log.d("prueba", "string:" + newUser.getEmail());
 
         if(ParseUser.getCurrentUser()!=null) {
             Log.d("prueba", "logueado con el usuario: usuario" + ParseUser.getCurrentUser().getUsername());
@@ -60,11 +59,30 @@ public class SignUpActivity extends AppCompatActivity {
                 if (e == null) {
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     startActivity(intent);
-                } else {
-                    Toast toast =
-                            Toast.makeText(getApplicationContext(),
-                                    "Sign up failed", Toast.LENGTH_SHORT);
-                    toast.show();
+                } else if ((usr.isEmpty() || pass.isEmpty()) || em.isEmpty()) {
+                    String emptyTitle = getResources().getString(R.string.empty_title);
+                    String emptyMessage = getResources().getString(R.string.empty_field_message);
+                    new AlertDialog.Builder(SignUpActivity.this)
+                            .setTitle(emptyTitle)
+                            .setMessage(emptyMessage)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+                } else if (!em.contentEquals(EMAIL_VERIFICATION)) {
+                    String userTitle = getResources().getString(R.string.user_title);
+                    String userMessage = getResources().getString(R.string.email_fail_message);
+                    new AlertDialog.Builder(SignUpActivity.this)
+                            .setTitle(userTitle)
+                            .setMessage(userMessage)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
                 }
             }
         });
@@ -77,3 +95,6 @@ public class SignUpActivity extends AppCompatActivity {
         return newUser;
     }
 }
+
+
+
