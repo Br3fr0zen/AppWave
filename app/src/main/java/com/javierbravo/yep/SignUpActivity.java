@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,46 +46,45 @@ public class SignUpActivity extends AppCompatActivity {
 
         final ParseUser newUser = new ParseUser();
 
-        //Method to set dataa.
+        //Method to set data.
         trimSpaces(newUser, usr, pass, em);
 
-        if(ParseUser.getCurrentUser()!=null) {
-            Log.d("prueba", "logueado con el usuario: usuario" + ParseUser.getCurrentUser().getUsername());
-            ParseUser.logOut();
-        }
         newUser.signUpInBackground(new SignUpCallback() {
             public void done(com.parse.ParseException e) {
                 if (e == null) {
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                } else if ((usr.isEmpty() || pass.isEmpty()) || em.isEmpty()) {
-                    String emptyTitle = getResources().getString(R.string.empty_title);
-                    String emptyMessage = getResources().getString(R.string.empty_field_message);
-                    new AlertDialog.Builder(SignUpActivity.this)
-                            .setTitle(emptyTitle)
-                            .setMessage(emptyMessage)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                } else if((usr.isEmpty() || pass.isEmpty()) || em.isEmpty()){
+                        String emptyTitle = getResources().getString(R.string.empty_title);
+                        String emptyMessage = getResources().getString(R.string.empty_field_message);
+                        new AlertDialog.Builder(SignUpActivity.this)
+                                .setTitle(emptyTitle)
+                                .setMessage(emptyMessage)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                }
-                            }).show();
-                } else if (!em.contentEquals(EMAIL_VERIFICATION)) {
-                    String userTitle = getResources().getString(R.string.user_title);
-                    String userMessage = getResources().getString(R.string.email_fail_message);
-                    new AlertDialog.Builder(SignUpActivity.this)
-                            .setTitle(userTitle)
-                            .setMessage(userMessage)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                }).show();
+                    } else if (!em.contentEquals(EMAIL_VERIFICATION)) {
+                        String userTitle = getResources().getString(R.string.user_title);
+                        String userMessage = getResources().getString(R.string.email_fail_message);
+                        new AlertDialog.Builder(SignUpActivity.this)
+                                .setTitle(userTitle)
+                                .setMessage(userMessage)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                }
-                            }).show();
+                                    }
+                                }).show();
+                    }
                 }
-            }
         });
-    }
+}
 
     protected ParseUser trimSpaces(ParseUser newUser, String usr, String pass, String em){
         newUser.setUsername(usr);

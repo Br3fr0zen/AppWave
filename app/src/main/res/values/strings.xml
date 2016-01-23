@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Wave</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_logout">Log Out</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="LoginBtn">Login</string>
     <string name="SignUp">Sign Up</string>
@@ -15,7 +15,8 @@
     <string name="user_title">Invalid user: </string>
     <string name="empty_field_message">One or more fields are empty</string>
     <string name="email_fail_message">User is already being used, also make sure your email contains a valid format</string>
-
+    <string name="wrong_login_message">The user or password you have introduced doesn\'t matches any user, please try again </string>
+    <string name="loging_message">Welcome!</string>
 
 
 </resources>
