@@ -47,7 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         final ParseUser newUser = new ParseUser();
 
-        //Method to set data.
+        //Method to set dataa.
         trimSpaces(newUser, usr, pass, em);
 
         if(ParseUser.getCurrentUser()!=null) {
