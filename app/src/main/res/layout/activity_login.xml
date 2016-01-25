@@ -49,7 +49,7 @@
         android:layout_marginRight="30dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:background="@android:color/white"
+        android:background="@color/background_transparent_white"
         android:orientation="vertical">
 
         <EditText
@@ -57,8 +57,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/Username"
-            android:textColor="#ff3399"
-            android:textColorHint="#ff99cc"
+            android:textColor="#0059b3"
+            android:textColorHint="#4da5ff"
             android:textSize="20sp"
             android:drawable="@drawable/appwave_edit_text_holo_light"/>
 
@@ -69,8 +69,8 @@
             android:ems="10"
             android:hint="@string/Password"
             android:inputType="textPassword"
-            android:textColor="#ff3399"
-            android:textColorHint="#ff99cc"
+            android:textColor="#0059b3"
+            android:textColorHint="#4da5ff"
             android:textSize="20sp"
             android:drawable="@drawable/appwave_edit_text_holo_light"/>
 
@@ -87,8 +87,9 @@
         android:singleLine="false"
         android:text="@string/LoginBtn"
         android:textColor="#0059b3"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginTop="-4.2dp"
+        android:layout_marginLeft="25.5dp"
+        android:layout_marginRight="25.5dp"
         android:textSize="20sp"
         android:textAlignment="center"
         style="@style/ButtonAppWave" />

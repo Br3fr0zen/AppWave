@@ -1,11 +1,13 @@
 package com.javierbravo.yep;
 
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -43,6 +45,11 @@ public class SignUpActivity extends AppCompatActivity {
         final String usr = username.getText().toString().replace(" ", "");
         final String pass = password.getText().toString().replace(" ", "");
         final String em = email.getText().toString().replace(" ", "");
+
+        ObjectAnimator moveAnim = ObjectAnimator.ofFloat(btnSignUp, "Y", 4000);
+        moveAnim.setDuration(1000);
+        moveAnim.setInterpolator(new BounceInterpolator());
+        moveAnim.start();
 
         final ParseUser newUser = new ParseUser();
 
