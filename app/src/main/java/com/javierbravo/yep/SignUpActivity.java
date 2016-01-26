@@ -46,10 +46,8 @@ public class SignUpActivity extends AppCompatActivity {
         final String pass = password.getText().toString().replace(" ", "");
         final String em = email.getText().toString().replace(" ", "");
 
-        ObjectAnimator moveAnim = ObjectAnimator.ofFloat(btnSignUp, "Y", 4000);
-        moveAnim.setDuration(1000);
-        moveAnim.setInterpolator(new BounceInterpolator());
-        moveAnim.start();
+        final ObjectAnimator moveAnim = null;
+        buttonAnimationHide(btnSignUp, moveAnim);
 
         final ParseUser newUser = new ParseUser();
 
@@ -60,38 +58,52 @@ public class SignUpActivity extends AppCompatActivity {
             public void done(com.parse.ParseException e) {
                 if (e == null) {
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                } else if((usr.isEmpty() || pass.isEmpty()) || em.isEmpty()){
-                        String emptyTitle = getResources().getString(R.string.empty_title);
-                        String emptyMessage = getResources().getString(R.string.empty_field_message);
-                        new AlertDialog.Builder(SignUpActivity.this)
-                                .setTitle(emptyTitle)
-                                .setMessage(emptyMessage)
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                    }
-                                }).show();
-                    } else if (!em.contentEquals(EMAIL_VERIFICATION)) {
-                        String userTitle = getResources().getString(R.string.user_title);
-                        String userMessage = getResources().getString(R.string.email_fail_message);
-                        new AlertDialog.Builder(SignUpActivity.this)
-                                .setTitle(userTitle)
-                                .setMessage(userMessage)
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                    }
-                                }).show();
-                    }
+                } else if ((usr.isEmpty() || pass.isEmpty()) || em.isEmpty()) {
+                    String emptyTitle = getResources().getString(R.string.empty_title);
+                    String emptyMessage = getResources().getString(R.string.empty_field_message);
+                    new AlertDialog.Builder(SignUpActivity.this)
+                            .setTitle(emptyTitle)
+                            .setMessage(emptyMessage)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    buttonAnimationShow(btnSignUp,moveAnim);
+                                }
+                            }).show();
+                } else if (!em.contentEquals(EMAIL_VERIFICATION)) {
+                    String userTitle = getResources().getString(R.string.user_title);
+                    String userMessage = getResources().getString(R.string.email_fail_message);
+                    new AlertDialog.Builder(SignUpActivity.this)
+                            .setTitle(userTitle)
+                            .setMessage(userMessage)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    buttonAnimationShow(btnSignUp,moveAnim);
+                                }
+                            }).show();
                 }
+            }
         });
 }
+
+    protected void buttonAnimationHide(Button btnSignUp, ObjectAnimator moveAnim) {
+        moveAnim = ObjectAnimator.ofFloat(btnSignUp, "X", 4000);
+        moveAnim.setDuration(1000);
+        moveAnim.setInterpolator(new BounceInterpolator());
+        moveAnim.start();
+    }
+
+    protected void buttonAnimationShow(Button btnSignUp, ObjectAnimator moveAnim) {
+        moveAnim = ObjectAnimator.ofFloat(btnSignUp, "X", 68);
+        moveAnim.setDuration(1000);
+        moveAnim.setInterpolator(new BounceInterpolator());
+        moveAnim.start();
+    }
 
     protected ParseUser trimSpaces(ParseUser newUser, String usr, String pass, String em){
         newUser.setUsername(usr);

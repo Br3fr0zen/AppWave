@@ -1,9 +1,11 @@
 package com.javierbravo.yep;
 
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -42,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().hide();
+       getSupportActionBar().hide();
 
         mSignUpTextView = (TextView)findViewById(R.id.SignUpText);
         mSignUpTextView.setOnClickListener(new View.OnClickListener() {
@@ -71,29 +73,31 @@ public class LoginActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    /*public void showProgressBar(){
+   /* public void showProgressBar(){
         //Show progress item.
         miActionProgressItem.setVisible(true);
-    }*/
+    }
 
-    /*public void hideProgressBar(){
+    public void hideProgressBar(){
         //Hide progress item.
         try {
-            miActionProgressItem.wait(5000);
+            miActionProgressItem.wait(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         miActionProgressItem.setVisible(false);
     }*/
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void logInClick() {
+
         //showProgressBar();
+        //hideProgressBar();
         final String usr = username.getText().toString();
         final String pass = password.getText().toString();
 
-        ObjectAnimator moveAnim = ObjectAnimator.ofFloat(logIn, "X", 4000);
-        moveAnim.setDuration(1000);
-        moveAnim.setInterpolator(new BounceInterpolator());
-        moveAnim.start();
+        final ObjectAnimator moveAnim = null;
+        buttonAnimationHide(logIn,moveAnim);
 
         ParseUser.logInInBackground(usr, pass, new LogInCallback() {
             @Override
@@ -102,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                    //hideProgressBar();
                 } else {
                     String wrongLogInTitle = getResources().getString(R.string.user_title);
                     String wrongLogInMessage = getResources().getString(R.string.wrong_login_message);
@@ -113,11 +116,26 @@ public class LoginActivity extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    buttonAnimationShow(logIn,moveAnim);
 
                                 }
                             }).show();
                 }
             }
         });
+    }
+
+    protected void buttonAnimationHide(Button logIn, ObjectAnimator moveAnim) {
+        moveAnim = ObjectAnimator.ofFloat(logIn, "X", 4000);
+        moveAnim.setDuration(1000);
+        moveAnim.setInterpolator(new BounceInterpolator());
+        moveAnim.start();
+    }
+
+    protected void buttonAnimationShow(Button logIn, ObjectAnimator moveAnim){
+        moveAnim = ObjectAnimator.ofFloat(logIn, "X", 68);
+        moveAnim.setDuration(1000);
+        moveAnim.setInterpolator(new BounceInterpolator());
+        moveAnim.start();
     }
 }
