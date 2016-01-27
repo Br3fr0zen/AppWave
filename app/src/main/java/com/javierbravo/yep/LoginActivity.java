@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
@@ -121,12 +122,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void buttonAnimationHide(Button logIn) {
-        Animation btnRight = AnimationUtils.loadAnimation(this,R.anim.button_anim_right);
+        Animation btnRight = AnimationUtils.loadAnimation(this, R.anim.button_anim_bounce_right);
         logIn.startAnimation(btnRight);
     }
 
     protected void buttonAnimationShow(Button logIn) {
-        Animation btnLeft = AnimationUtils.loadAnimation(this,R.anim.button_anim_left);
+        Animation btnLeft = AnimationUtils.loadAnimation(this,R.anim.button_anim_bounce_left);
         logIn.startAnimation(btnLeft);
+    }
+
+    protected void viewAnimationChange(TextView mSignUpTextView) {
+        Animation changeView = AnimationUtils.loadAnimation(this,R.anim.slide_in_right);
+        mSignUpTextView.startAnimation(changeView);
     }
 }

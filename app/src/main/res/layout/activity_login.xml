@@ -103,6 +103,6 @@
         android:text="@string/SignUp"
         android:textColor="#ff80c0"
         android:textStyle="bold"
-        android:textSize="15sp" />
+        android:textSize="20sp" />
 
 </RelativeLayout>

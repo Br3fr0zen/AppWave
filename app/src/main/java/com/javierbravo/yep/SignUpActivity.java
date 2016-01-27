@@ -31,6 +31,9 @@ public class SignUpActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.passwordField);
         email = (EditText) findViewById(R.id.emailField);
 
+        //Se utilizará cuando haya un botón de cancelar registro...
+        //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
         btnSignUp = (Button) findViewById(R.id.signupButton);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,12 +93,12 @@ public class SignUpActivity extends AppCompatActivity {
 }
 
     protected void buttonAnimationHide(Button btnSignUp) {
-        Animation btnRight = AnimationUtils.loadAnimation(this, R.anim.button_anim_right);
+        Animation btnRight = AnimationUtils.loadAnimation(this, R.anim.button_anim_bounce_right);
         btnSignUp.startAnimation(btnRight);
     }
 
     protected void buttonAnimationShow(Button btnSignUp) {
-        Animation btnLeft = AnimationUtils.loadAnimation(this, R.anim.button_anim_left);
+        Animation btnLeft = AnimationUtils.loadAnimation(this, R.anim.button_anim_bounce_left);
         btnSignUp.startAnimation(btnLeft);
     }
 
