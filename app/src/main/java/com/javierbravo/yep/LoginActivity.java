@@ -1,18 +1,16 @@
 package com.javierbravo.yep;
 
-import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -88,7 +86,6 @@ public class LoginActivity extends AppCompatActivity {
         miActionProgressItem.setVisible(false);
     }*/
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void logInClick() {
 
         //showProgressBar();
@@ -96,8 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         final String usr = username.getText().toString();
         final String pass = password.getText().toString();
 
-        final ObjectAnimator moveAnim = null;
-        buttonAnimationHide(logIn,moveAnim);
+        buttonAnimationHide(logIn);
 
         ParseUser.logInInBackground(usr, pass, new LogInCallback() {
             @Override
@@ -116,8 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    buttonAnimationShow(logIn,moveAnim);
-
+                                    buttonAnimationShow(logIn);
                                 }
                             }).show();
                 }
@@ -125,17 +120,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    protected void buttonAnimationHide(Button logIn, ObjectAnimator moveAnim) {
-        moveAnim = ObjectAnimator.ofFloat(logIn, "X", 4000);
-        moveAnim.setDuration(1000);
-        moveAnim.setInterpolator(new BounceInterpolator());
-        moveAnim.start();
+    protected void buttonAnimationHide(Button logIn) {
+        Animation btnRight = AnimationUtils.loadAnimation(this,R.anim.button_anim_right);
+        logIn.startAnimation(btnRight);
     }
 
-    protected void buttonAnimationShow(Button logIn, ObjectAnimator moveAnim){
-        moveAnim = ObjectAnimator.ofFloat(logIn, "X", 68);
-        moveAnim.setDuration(1000);
-        moveAnim.setInterpolator(new BounceInterpolator());
-        moveAnim.start();
+    protected void buttonAnimationShow(Button logIn) {
+        Animation btnLeft = AnimationUtils.loadAnimation(this,R.anim.button_anim_left);
+        logIn.startAnimation(btnLeft);
     }
 }

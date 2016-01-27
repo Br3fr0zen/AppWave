@@ -1,13 +1,13 @@
 package com.javierbravo.yep;
 
-import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -46,9 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
         final String pass = password.getText().toString().replace(" ", "");
         final String em = email.getText().toString().replace(" ", "");
 
-        final ObjectAnimator moveAnim = null;
-        buttonAnimationHide(btnSignUp, moveAnim);
-
+        buttonAnimationHide(btnSignUp);
         final ParseUser newUser = new ParseUser();
 
         //Method to set data.
@@ -70,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    buttonAnimationShow(btnSignUp,moveAnim);
+                                    buttonAnimationShow(btnSignUp);
                                 }
                             }).show();
                 } else if (!em.contentEquals(EMAIL_VERIFICATION)) {
@@ -83,7 +81,7 @@ public class SignUpActivity extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    buttonAnimationShow(btnSignUp,moveAnim);
+                                    buttonAnimationShow(btnSignUp);
                                 }
                             }).show();
                 }
@@ -91,18 +89,14 @@ public class SignUpActivity extends AppCompatActivity {
         });
 }
 
-    protected void buttonAnimationHide(Button btnSignUp, ObjectAnimator moveAnim) {
-        moveAnim = ObjectAnimator.ofFloat(btnSignUp, "X", 4000);
-        moveAnim.setDuration(1000);
-        moveAnim.setInterpolator(new BounceInterpolator());
-        moveAnim.start();
+    protected void buttonAnimationHide(Button btnSignUp) {
+        Animation btnRight = AnimationUtils.loadAnimation(this, R.anim.button_anim_right);
+        btnSignUp.startAnimation(btnRight);
     }
 
-    protected void buttonAnimationShow(Button btnSignUp, ObjectAnimator moveAnim) {
-        moveAnim = ObjectAnimator.ofFloat(btnSignUp, "X", 68);
-        moveAnim.setDuration(1000);
-        moveAnim.setInterpolator(new BounceInterpolator());
-        moveAnim.start();
+    protected void buttonAnimationShow(Button btnSignUp) {
+        Animation btnLeft = AnimationUtils.loadAnimation(this, R.anim.button_anim_left);
+        btnSignUp.startAnimation(btnLeft);
     }
 
     protected ParseUser trimSpaces(ParseUser newUser, String usr, String pass, String em){
