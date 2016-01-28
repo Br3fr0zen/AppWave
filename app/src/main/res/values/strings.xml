@@ -17,6 +17,7 @@
     <string name="email_fail_message">User is already being used, also make sure your email contains a valid format</string>
     <string name="wrong_login_message">The user or password you have introduced doesn\'t matches any user, please try again </string>
     <string name="loging_message">Welcome!</string>
+    <string name="Cancel">Cancel</string>
 
 
 </resources>

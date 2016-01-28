@@ -18,7 +18,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public static final String EMAIL_VERIFICATION = "/^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$/";
     protected EditText username, password, email;
-    protected Button btnSignUp;
+    protected Button btnSignUp, btnCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +32,22 @@ public class SignUpActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.emailField);
 
         //Se utilizará cuando haya un botón de cancelar registro...
-        //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
         btnSignUp = (Button) findViewById(R.id.signupButton);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signUpClick();
+            }
+        });
+
+        btnCancel = (Button) findViewById(R.id.cancelButton);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
     }
@@ -100,6 +109,11 @@ public class SignUpActivity extends AppCompatActivity {
     protected void buttonAnimationShow(Button btnSignUp) {
         Animation btnLeft = AnimationUtils.loadAnimation(this, R.anim.button_anim_bounce_left);
         btnSignUp.startAnimation(btnLeft);
+    }
+
+    protected void viewAnimationChange(Button btnCancel) {
+        Animation changeView = AnimationUtils.loadAnimation(this,R.anim.slide_in_left);
+        btnCancel.startAnimation(changeView);
     }
 
     protected ParseUser trimSpaces(ParseUser newUser, String usr, String pass, String em){

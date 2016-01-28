@@ -105,4 +105,27 @@
         android:textStyle="bold"
         android:textSize="20sp" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SignUpText"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="false"
+        android:visibility="invisible"
+        android:max="100"
+        android:minHeight="50dp"
+        android:minWidth="200dp"
+        android:progress="1" />
+
+    <TextView
+        android:id="@+id/progressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/progressBar"
+        android:textColor="#ff80c0"/>
+
 </RelativeLayout>
