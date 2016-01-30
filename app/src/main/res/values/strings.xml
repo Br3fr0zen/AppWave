@@ -19,6 +19,8 @@
     <string name="loging_message">Welcome!</string>
     <string name="Cancel">Cancel</string>
     <string name="title_activity_splash_screen">Loading...</string>
+    <string name="empty_inbox_label">No hay nuevos mensajes</string>
+    <string name="empty_friends_label">Añade amigos para empezar</string>
 
 
 </resources>
