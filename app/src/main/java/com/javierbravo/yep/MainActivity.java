@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
     private void checkIfLoged() {
         ParseUser currentUser = ParseUser.getCurrentUser();
 
-        if(currentUser != null){
+        if (currentUser != null) {
 
-        }else {
+        } else {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -159,7 +160,14 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+
+            switch (position) {
+                default:
+                    return new InBoxFragent();
+                case 1:
+                    return new FriendsFragment();
+            }
+
         }
 
         @Override
