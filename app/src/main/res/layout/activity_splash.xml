@@ -11,8 +11,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/ola" />
+        android:scaleType="fitEnd"
+        android:src="@drawable/oladefhorsplash_hdpi"
+        android:background="#ffeef6" />
 
     <TextView
         android:id="@+id/titulo"
