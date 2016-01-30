@@ -1,6 +1,7 @@
 package com.javierbravo.yep;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -86,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
     private void logInClick() {
         final String usr = username.getText().toString();
         final String pass = password.getText().toString();
+        hiddingKeyboard();
 
         buttonAnimationHide(logIn);
 
@@ -111,6 +114,18 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    protected void hiddingKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) this
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        //check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view == null)
+            return;
+
+        inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     protected void buttonAnimationHide(Button logIn) {
