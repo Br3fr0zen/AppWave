@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-
+//a
 public class LoginActivity extends AppCompatActivity {
 
     public static final int LOADING_COMPLETED = 100;
