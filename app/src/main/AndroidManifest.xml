@@ -12,7 +12,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/WaveTheme">
-
         <meta-data
             android:name="com.parse.APPLICATION_ID"
             android:value="RnVgwT4upWUHOC1FB71u0hr0tuT6dnHHeAS3klgE" />
@@ -22,6 +21,17 @@
 
         <activity
             android:name=".MainActivity"
+            android:theme="@style/WaveTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignUpActivity"
+            android:parentActivityName=".LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/WaveTheme.NoActionBar">
             <intent-filter>
@@ -29,13 +39,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".SignUpActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".LoginActivity">
-        </activity>
+         </activity>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package com.javierbravo.yep;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,9 @@ public class LoginActivity extends AppCompatActivity {
     protected TextView mSignUpTextView;
 
     protected ProgressBar progressBar = null;
-    protected TextView textView = null;
+    protected TextView textViewProgress = null;
+    protected TextView textTitle;
+    protected TextView textSubtitle;
     protected Handler handler = new Handler();
 
 
@@ -35,6 +38,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        textTitle = (TextView) findViewById(R.id.titulo);
+        textSubtitle = (TextView) findViewById(R.id.subtitulo);
+
+        Typeface myFont = Typeface.createFromAsset(getAssets(), "fonts/NexaScript-Free.otf");
+        textTitle.setTypeface(myFont);
+        textSubtitle.setTypeface(myFont);
 
         username = (EditText) findViewById(R.id.UserMainField);
         password = (EditText) findViewById(R.id.PasswordField);
@@ -60,8 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         // Inflate the menu; this adds items to the action bar if it is present..
@@ -85,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
+                    mSignUpTextView.setVisibility(View.INVISIBLE);
                     startProgress(handler);
                 } else {
                     String wrongLogInTitle = getResources().getString(R.string.user_title);
@@ -104,9 +113,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     protected void buttonAnimationHide(Button logIn) {
         Animation btnRight = AnimationUtils.loadAnimation(this, R.anim.button_anim_bounce_right);
         logIn.startAnimation(btnRight);
@@ -116,30 +122,26 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
     }
     protected void buttonAnimationShow(Button logIn) {
         Animation btnLeft = AnimationUtils.loadAnimation(this,R.anim.button_anim_bounce_left);
         logIn.startAnimation(btnLeft);
     }
 
-    protected void viewAnimationChange(TextView mSignUpTextView) {
-        Animation changeView = AnimationUtils.loadAnimation(this,R.anim.slide_in_right);
-        mSignUpTextView.startAnimation(changeView);
-    }
-
     protected void startProgress(final Handler handler) {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
-        textView = (TextView) findViewById(R.id.progressText);
+        textViewProgress = (TextView) findViewById(R.id.progressText);
 
         final int[] progressStatus = {0};
-        final TextView finalTextView = textView;
+        final TextView finalTextView = textViewProgress;
         final ProgressBar finalProgressBar = progressBar;
 
         new Thread(new Runnable() {
             public void run() {
                 while (progressStatus[0] <= 100) {
-                    progressStatus[0] += 5;
+                    progressStatus[0] += 10;
                     if(progressStatus[0] == LOADING_COMPLETED)
                         checkUser();
 
@@ -159,10 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-
             }
         }).start();
-
-
     }
 }

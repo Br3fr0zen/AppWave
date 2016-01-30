@@ -23,7 +23,7 @@
         android:layout_marginTop="35dp"
         android:text="@string/title"
         android:textColor="#ff80c0"
-        android:textSize="70sp"
+        android:textSize="80sp"
         android:textStyle="bold" />
 
     <TextView
@@ -111,7 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/SignUpText"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:indeterminate="false"
         android:visibility="invisible"

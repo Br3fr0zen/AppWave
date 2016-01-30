@@ -18,6 +18,7 @@
     <string name="wrong_login_message">The user or password you have introduced doesn\'t matches any user, please try again </string>
     <string name="loging_message">Welcome!</string>
     <string name="Cancel">Cancel</string>
+    <string name="title_activity_splash_screen">Loading...</string>
 
 
 </resources>
