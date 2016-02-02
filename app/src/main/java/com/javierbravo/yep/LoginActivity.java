@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-       getSupportActionBar().hide();
+        getSupportActionBar().hide();
 
         mSignUpTextView = (TextView)findViewById(R.id.SignUpText);
         mSignUpTextView.setOnClickListener(new View.OnClickListener() {

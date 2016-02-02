@@ -9,12 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.parse.ParseUser;
 
@@ -106,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
             return true;
+        } else if( id == R.id.action_add_friend) {
+            Intent intent = new Intent(this, EditFriendsActivity.class);
+            startActivity(intent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -136,14 +136,14 @@ public class MainActivity extends AppCompatActivity {
             return fragment;
         }
 
-        @Override
+       /* @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
-        }
+        }*/
     }
 
     /**
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (position) {
                 default:
-                    return new InBoxFragent();
+                    return new InBoxFragment();
                 case 1:
                     return new FriendsFragment();
             }

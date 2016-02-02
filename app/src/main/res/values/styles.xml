@@ -33,4 +33,9 @@
         <item name="android:background">@drawable/appwave_btn_default_holo_light</item>
     </style>
 
+    <style name="AppCompatTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
 </resources>
