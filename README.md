@@ -2,7 +2,7 @@
 
 <h1><b><P ALIGN=center>WAVE</b></h1>
 
-
+http://i.imgur.com/9i1Zwwo.png
 
 Wave es una red social en desarrollo y realizada con metodología scrum para la división de trabajo y desarrollada mediante Android Studio y Parse.
 
