@@ -10,7 +10,6 @@ Wave es una red social en desarrollo y realizada con metodología scrum para la 
 A diferencia de otras aplicaciones existentes, Wave intenta unificar lo mejor de cada red social para así crear la red social definitiva a la vez que cuidar el diseño de la app, para que la gente disfrute al usar la aplicación de manera intuitiva mientras se relaciona con las personas que quiere de todos los modos posibles.
 
 
-
 <table frame="void" rules="none">
 
 <tbody valign="top">
