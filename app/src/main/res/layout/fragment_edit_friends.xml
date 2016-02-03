@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".EditFriendsFragment"
     android:orientation="vertical"
-    style="@style/WaveTheme">
+    style="@style/WaveTheme"
+    android:weightSum="1">
 
     <ListView
         android:id="@android:id/list"
@@ -20,14 +21,15 @@
         android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/empty_friends_label"
-        android:visibility="invisible"/>
+        android:layout_marginTop="80dp"
+        android:text="@string/empty_friends_label" />
 
     <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_below="@android:id/empty"/>
 
 </LinearLayout>

@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         checkIfLoged();
 
         super.onCreate(savedInstanceState);
@@ -52,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_tab_friends);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_menu_send);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_menu_send);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_tab_friends);
 
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 

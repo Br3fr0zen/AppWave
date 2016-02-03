@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-//a
+
 public class LoginActivity extends AppCompatActivity {
 
     public static final int LOADING_COMPLETED = 100;
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
                     mSignUpTextView.setVisibility(View.INVISIBLE);
-                    startProgress(handler);
+                    checkUser();
                 } else {
                     String wrongLogInTitle = getResources().getString(R.string.user_title);
                     String wrongLogInMessage = getResources().getString(R.string.wrong_login_message);
@@ -133,50 +133,16 @@ public class LoginActivity extends AppCompatActivity {
         logIn.startAnimation(btnRight);
     }
 
+    protected void buttonAnimationShow(Button logIn) {
+        Animation btnLeft = AnimationUtils.loadAnimation(this,R.anim.button_anim_bounce_left);
+        logIn.startAnimation(btnLeft);
+    }
+
     protected void checkUser() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
     }
-    protected void buttonAnimationShow(Button logIn) {
-        Animation btnLeft = AnimationUtils.loadAnimation(this,R.anim.button_anim_bounce_left);
-        logIn.startAnimation(btnLeft);
-    }
 
-    protected void startProgress(final Handler handler) {
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
-        textViewProgress = (TextView) findViewById(R.id.progressText);
-
-        final int[] progressStatus = {0};
-        final TextView finalTextView = textViewProgress;
-        final ProgressBar finalProgressBar = progressBar;
-
-        new Thread(new Runnable() {
-            public void run() {
-                while (progressStatus[0] <= 100) {
-                    progressStatus[0] += 10;
-                    if(progressStatus[0] == LOADING_COMPLETED)
-                        checkUser();
-
-                    // Update the progress bar and display the
-                    //current value in the text view
-                    handler.post(new Runnable() {
-                        public void run() {
-                            finalProgressBar.setProgress(progressStatus[0]);
-                            finalTextView.setText(progressStatus[0] + "/" + finalProgressBar.getMax());
-                        }
-                    });
-                    try {
-                        // Sleep for 200 milliseconds.
-                        //Just to display the progress slowly
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-    }
 }

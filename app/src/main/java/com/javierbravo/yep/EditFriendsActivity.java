@@ -10,6 +10,7 @@ public class EditFriendsActivity extends AppCompatActivity {
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_edit_friends);
             if (savedInstanceState == null) {

@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 public class SplashActivity extends Activity {
 
-    protected static final int SPLASH_DELAY = 1000;
     public static final int LOADING_COMPLETED = 100;
     protected ProgressBar progressBar = null;
     protected TextView textViewProgress = null;
@@ -57,6 +56,7 @@ public class SplashActivity extends Activity {
                             finalProgressBar.setProgress(progressStatus[0]);
                             finalTextView.setText(progressStatus[0] + "/" + finalProgressBar.getMax());
                         }
+
                     });
                     try {
                         // Sleep for 200 milliseconds.
@@ -68,10 +68,12 @@ public class SplashActivity extends Activity {
                 }
             }
         }).start();
+
     }
     protected void checkUser() {
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
     }
 }
