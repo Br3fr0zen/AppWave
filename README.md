@@ -15,11 +15,11 @@ A diferencia de otras aplicaciones existentes, Wave intenta unificar lo mejor de
 
 <tbody valign="top">
 
-<tr><th>Wiki:</th><td><a href="http://">Wiki App Wave</a></td>
+<tr><th>Wiki:</th><td><a href="https://github.com/Br3fr0zen/AppWave/wiki">Home wiki App Wave</a></td>
 </tr>
-<tr><th>Colaboradores:</th><td><a href="https://">Funciones realizadas</a></td>
+<tr><th>Colaboradores:</th><td><a href="https://github.com/Br3fr0zen/AppWave/wiki/Colaboradores">Funciones realizadas</a></td>
 </tr>
-<tr><th>Links:</th><td><a href="http://">Links útiles</a></td>
+<tr><th>Links:</th><td><a href="https://github.com/Br3fr0zen/AppWave/wiki/Links-%C3%BAtiles">Links útiles</a></td>
 </tr>
 
 </tbody>
