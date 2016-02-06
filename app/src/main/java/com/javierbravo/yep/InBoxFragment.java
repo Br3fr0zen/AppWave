@@ -7,14 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.parse.ParseObject;
+
+import java.text.ParseException;
+import java.util.List;
+
 /**
- * Created by manu on 29/01/2016.
+ * Created by Bravo on 05/02/2016.
  */
 
 
 
 public class InBoxFragment extends ListFragment {
 
+    protected List<ParseObject> mMessage;
     protected ProgressBar spinner;
 
     @Override
@@ -27,4 +33,25 @@ public class InBoxFragment extends ListFragment {
         spinner.setVisibility(View.GONE);
         return rootView;
     }
+
+
+    public void done(List<ParseObject> messages, ParseException e) {
+        getActivity().setProgressBarIndeterminateVisibility(false);
+
+        if (e == null) {
+            mMessage = messages;
+
+            String[] usernames = new String[mMessage.size()];
+            int i = 0;
+            for (ParseObject message : mMessage) {
+                usernames[i] = message.getString(ParseConstants.KEY_SENDER_NAME);
+                i++;
+            }
+            MessageAdapter adapter = new MessageAdapter(getListView().getContext(), mMessage);
+            setListAdapter(adapter);
+        }
+
+
+    }
+
 }
