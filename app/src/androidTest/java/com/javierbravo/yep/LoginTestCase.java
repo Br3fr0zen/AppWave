@@ -17,8 +17,8 @@ public class LoginTestCase extends ActivityInstrumentationTestCase2<LoginActivit
     private EditText password;
     private Button loginBtn;
 
-    private static final String USERNAME = "Manu";
-    private static final String PASSWORD = "1 2 3";
+    private static final String USERNAME = "Bravo";
+    private static final String PASSWORD = "1 2 3 4";
 
     public LoginTestCase() {
         super(LoginActivity.class);
