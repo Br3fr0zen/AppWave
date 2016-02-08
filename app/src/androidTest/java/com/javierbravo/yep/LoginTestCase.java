@@ -8,7 +8,7 @@ import android.widget.EditText;
 import com.parse.ParseUser;
 
 /**
- * Created by Bravo on 06/02/2016.
+ * Created by Kike on 06/02/2016.
  */
 public class LoginTestCase extends ActivityInstrumentationTestCase2<LoginActivity> {
 
@@ -17,7 +17,7 @@ public class LoginTestCase extends ActivityInstrumentationTestCase2<LoginActivit
     private EditText password;
     private Button loginBtn;
 
-    private static final String USERNAME = "Manu";
+    private static final String USERNAME = "Kike";
     private static final String PASSWORD = "1 2 3";
 
     public LoginTestCase() {
