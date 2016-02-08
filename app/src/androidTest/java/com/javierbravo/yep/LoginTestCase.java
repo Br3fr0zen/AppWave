@@ -6,16 +6,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.parse.ParseUser;
-
-/**
- * Created by Bravo on 06/02/2016.
- */
+//
 public class LoginTestCase extends ActivityInstrumentationTestCase2<LoginActivity> {
 
-    private LoginActivity actividad;
-    private EditText usuarios;
+    private LoginActivity activity;
+    private EditText users;
     private EditText password;
-    private Button loginBtn;
+    private Button loginButton;
 
     private static final String USERNAME = "Manu";
     private static final String PASSWORD = "1 2 3";
@@ -26,10 +23,10 @@ public class LoginTestCase extends ActivityInstrumentationTestCase2<LoginActivit
 
     protected void setUp() throws Exception {
         super.setUp();
-        actividad = getActivity();
-        usuarios = (EditText) actividad.findViewById(R.id.UserMainField);
-        password = (EditText) actividad.findViewById(R.id.PasswordField);
-        loginBtn = (Button) actividad.findViewById(R.id.LoginButton);
+        activity = getActivity();
+        users = (EditText) activity.findViewById(R.id.UserMainField);
+        password = (EditText) activity.findViewById(R.id.PasswordField);
+        loginButton = (Button) activity.findViewById(R.id.LoginButton);
     }
 
 
@@ -37,13 +34,13 @@ public class LoginTestCase extends ActivityInstrumentationTestCase2<LoginActivit
         if(ParseUser.getCurrentUser() != null)
             ParseUser.logOutInBackground();
 
-        TouchUtils.tapView(this, usuarios);
+        TouchUtils.tapView(this, users);
         getInstrumentation().sendStringSync(USERNAME);
 
         TouchUtils.tapView(this, password);
         sendKeys(PASSWORD);
 
-        TouchUtils.clickView(this, loginBtn);
+        TouchUtils.clickView(this, loginButton);
 
         String Usuario = ParseUser.getCurrentUser().getUsername();
 
