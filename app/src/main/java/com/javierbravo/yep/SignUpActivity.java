@@ -64,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-
+/**/
     protected void signUpClick(){
 
         final String usr = username.getText().toString().replace(" ", "");
