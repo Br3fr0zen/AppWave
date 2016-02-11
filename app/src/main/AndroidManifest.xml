@@ -42,8 +42,14 @@
         <activity
             android:name=".EditFriendsActivity"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".RecipientsActivity"
+            android:label="@string/title_activity_recipients"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.javierbravo.yep.MainActivity" />
         </activity>
     </application>
 

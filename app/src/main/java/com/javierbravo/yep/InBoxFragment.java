@@ -1,29 +1,11 @@
 package com.javierbravo.yep;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-
-import com.parse.FindCallback;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Bravo on 05/02/2016.
  */
 
 
+/*
 public class InBoxFragment extends ListFragment {
 
     protected List<ParseObject> mMessage;
@@ -70,10 +52,15 @@ public class InBoxFragment extends ListFragment {
                                 mMessage);
                         setListAdapter(adapter);
                     } else {
-                        MessageAdapter adapter = new MessageAdapter(getListView().getContext(), mMessage);
-                        setListAdapter(adapter);
-                    }
+                        */
+/*((MessageAdapter)getListView().getAdapter()).refill(mMessage);*//*
 
+
+                       */
+/* MessageAdapter adapter = new MessageAdapter(getListView().getContext(), mMessage);
+                        setListAdapter(adapter);*//*
+
+                    }
 
                 }
 
@@ -98,7 +85,8 @@ public class InBoxFragment extends ListFragment {
         } else {
             // view the video
             Intent intent = new Intent(Intent.ACTION_VIEW, fileUri);
-            intent.setDataAndType(fileUri, "video/*");
+            intent.setDataAndType(fileUri, "video*/
+/*");
             startActivity(intent);
         }
 
@@ -119,4 +107,4 @@ public class InBoxFragment extends ListFragment {
             message.saveInBackground();
         }
     }
-}
+}*/

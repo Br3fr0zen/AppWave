@@ -1,5 +1,7 @@
 package com.javierbravo.yep;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -9,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,6 +19,7 @@ import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "Kase O Coño";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -100,18 +104,21 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            ParseUser.logOut();
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
-            return true;
-        } else if( id == R.id.action_add_friend) {
-            Intent intent = new Intent(this, EditFriendsActivity.class);
-            startActivity(intent);
-            return true;
-        }
+        switch (id) {
+            case R.id.action_settings:
+                ParseUser.logOut();
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
+                return true;
+            case R.id.action_add_friend:
+                Intent intent2 = new Intent(this, EditFriendsActivity.class);
+                startActivity(intent2);
+                return true;
+            case R.id.action_camera:
+                dialogCameraChoices();
+            }
 
         return super.onOptionsItemSelected(item);
     }
@@ -168,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (position) {
                 default:
-                    return new InBoxFragment();
+                    /*return new InBoxFragment();*/
                 case 1:
                     return new FriendsFragment();
             }
@@ -180,5 +187,32 @@ public class MainActivity extends AppCompatActivity {
             // Show 3 total pages.
             return 2;
         }
+    }
+
+    public void dialogCameraChoices() {
+        new AlertDialog.Builder(MainActivity.this).setItems(R.array.camera_choices, mDialogListener()).show();
+
+    }
+
+    private DialogInterface.OnClickListener mDialogListener() {
+        DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                int id = R.array.camera_choices;
+                switch (id) {
+                    case 0:
+                        Log.d(TAG, "Sección: " + id);
+                    case 1:
+                        Log.d(TAG, "Sección: " + id);
+                    case 2:
+                        Log.d(TAG, "Sección: " + id);
+                    case 3:
+                        Log.d(TAG, "Sección: " + id);
+                }
+
+            }
+        };
+       return dialogListener;
     }
 }

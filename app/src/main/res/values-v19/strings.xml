@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_recipients_list_message">No hay mensajes nuevos</string>
+</resources>
