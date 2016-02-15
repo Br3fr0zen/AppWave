@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int TAKE_VIDEO_REQUEST = 1;
     private static final int PICK_PHOTO_REQUEST = 2;
     private static final int PICK_VIDEO_REQUEST = 3;
-    private static final byte FILE_SIZE_LIMIT = 10;
+    private static final long FILE_SIZE_LIMIT = (long) ((1024*1024)*10.4858);
 
     /**
      * The {@link PagerAdapter} that will provide
