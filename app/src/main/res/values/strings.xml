@@ -23,6 +23,8 @@
     <string name="empty_friends_label">Add new friends to get started</string>
     <string name="edit_friends">Edit Friends</string>
     <string name="query_error">Unable to load user database</string>
+    <string name="video_size_title">Invalid video</string>
+    <string name="video_size">The video\'s size isn\'t supported, please choose one under 10MB </string>
     <string-array name="camera_choices">
         <item name="choice_photo">Take a picture</item>
         <item name="choice_video">Tap a video</item>

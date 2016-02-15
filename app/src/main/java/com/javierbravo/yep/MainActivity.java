@@ -18,11 +18,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.parse.ParseUser;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int TAKE_VIDEO_REQUEST = 1;
     private static final int PICK_PHOTO_REQUEST = 2;
     private static final int PICK_VIDEO_REQUEST = 3;
+    private static final byte FILE_SIZE_LIMIT = 10;
 
     /**
      * The {@link PagerAdapter} that will provide
@@ -272,13 +278,26 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 1:
                         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                        mMediaUri = FileUtilities.getOutputMediaFileUri(FileUtilities.MEDIA_TYPE_VIDEO);
+                        if(mMediaUri!= null){
+                            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
+                            takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
+                            takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
+                        } else Log.e(TAG_ERR, "An error has ocurred on external storage device");
                         startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
                         Log.d(TAG, "Section 2");
                         break;
                     case 2:
+                        Intent choosePhotoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                        choosePhotoIntent.setType("image/*");
+                        startActivityForResult(choosePhotoIntent, PICK_PHOTO_REQUEST);
                         Log.d(TAG, "Section 3");
                         break;
                     case 3:
+                        Intent chooseVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                        chooseVideoIntent.setType("video/*");
+                        Toast.makeText(getApplicationContext(),"Videos\'s duration shouldn\'t be longer than 10s",Toast.LENGTH_LONG).show();
+                        startActivityForResult(chooseVideoIntent, PICK_VIDEO_REQUEST);
                         Log.d(TAG, "Section 4");
                         break;
                 }
@@ -296,7 +315,65 @@ public class MainActivity extends AppCompatActivity {
                 Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 mediaScantIntent.setData(mMediaUri);
                 sendBroadcast(mediaScantIntent);
+            }
+        }
 
+        if (requestCode == TAKE_VIDEO_REQUEST) {
+            if(resultCode == RESULT_OK){
+                Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScantIntent.setData(mMediaUri);
+                sendBroadcast(mediaScantIntent);
+            }
+        }
+
+        if (requestCode == PICK_PHOTO_REQUEST) {
+            if(resultCode == RESULT_OK){
+                Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScantIntent.setData(mMediaUri);
+                sendBroadcast(mediaScantIntent);
+                if(data != null){
+                    mMediaUri = data.getData();
+                }else Log.e(TAG_ERR,"Error at picking a photo from gallery");
+            }
+        }
+
+        if (requestCode == PICK_VIDEO_REQUEST) {
+            if(resultCode == RESULT_OK){
+                InputStream is = null;
+                try {
+                    is = getContentResolver().openInputStream(mMediaUri);
+                    int fileSize = is.available();
+                    if(fileSize > FILE_SIZE_LIMIT){
+                        String userTitle = getResources().getString(R.string.video_size_title);
+                        String userMessage = getResources().getString(R.string.video_size);
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle(userTitle)
+                                .setMessage(userMessage)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                }).show();
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScantIntent.setData(mMediaUri);
+                sendBroadcast(mediaScantIntent);
+            }
+            if(data != null){
+                mMediaUri = data.getData();
             }
         }
     }
