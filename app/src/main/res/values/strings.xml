@@ -23,6 +23,12 @@
     <string name="empty_friends_label">Add new friends to get started</string>
     <string name="edit_friends">Edit Friends</string>
     <string name="query_error">Unable to load user database</string>
+    <string-array name="camera_choices">
+        <item name="choice_photo">Take a picture</item>
+        <item name="choice_video">Tap a video</item>
+        <item name="choice_select_photo">Choose an image from gallery</item>
+        <item name="choice_select_video">Choose a video from gallery</item>
+    </string-array>
 
 
 </resources>

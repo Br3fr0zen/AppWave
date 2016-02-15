@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -67,7 +68,7 @@ public class FriendsFragment extends ListFragment {
             @Override
             public void done(List users, ParseException e) {
                 if (e == null) {
-                   // progressBar.setVisibility(View.INVISIBLE);
+                    // progressBar.setVisibility(View.INVISIBLE);
                     mUsers = users;
                     for (ParseUser user : mUsers) {
                         objectIds.add(user.getObjectId());
@@ -79,6 +80,7 @@ public class FriendsFragment extends ListFragment {
                                 for (ParseUser user : friends) {
                                     Log.d(TAG, "id " + user.getObjectId());
                                     if (objectIds.contains(user.getObjectId())) {
+                                        getListView().setItemChecked(objectIds.indexOf(user.getObjectId()), false);
                                         adapter.add(user.getUsername());
                                     }
                                 }
@@ -97,7 +99,7 @@ public class FriendsFragment extends ListFragment {
         });
 
         setListAdapter(adapter);
-       // this.getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
 
 
         mCurrentUser.saveInBackground(new SaveCallback() {

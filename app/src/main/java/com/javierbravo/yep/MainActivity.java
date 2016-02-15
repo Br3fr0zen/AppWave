@@ -1,28 +1,45 @@
 package com.javierbravo.yep;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "Case Test";
+    private static final String TAG_ERR = "Error";
+    private static final int TAKE_PHOTO_REQUEST = 0;
+    private static final int TAKE_VIDEO_REQUEST = 1;
+    private static final int PICK_PHOTO_REQUEST = 2;
+    private static final int PICK_VIDEO_REQUEST = 3;
+
     /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * The {@link PagerAdapter} that will provide
      * fragments for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     * {@link FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
     /**
@@ -30,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private ViewPager mViewPager;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
+    Uri mMediaUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -100,20 +127,62 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            ParseUser.logOut();
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
-            return true;
-        } else if( id == R.id.action_add_friend) {
-            Intent intent = new Intent(this, EditFriendsActivity.class);
-            startActivity(intent);
-            return true;
+        switch (id) {
+            case R.id.action_logout:
+                ParseUser.logOut();
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
+                return true;
+            case R.id.action_add_friend:
+                Intent intent2 = new Intent(this, EditFriendsActivity.class);
+                startActivity(intent2);
+                return true;
+            case R.id.action_camera:
+                dialogCameraChoices();
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.javierbravo.yep/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.javierbravo.yep/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 
     /**
@@ -179,6 +248,56 @@ public class MainActivity extends AppCompatActivity {
         public int getCount() {
             // Show 3 total pages.
             return 2;
+        }
+    }
+
+    private void dialogCameraChoices() {
+        new AlertDialog.Builder(MainActivity.this).setItems(R.array.camera_choices, mDialogListener()).show();
+    }
+
+    private DialogInterface.OnClickListener mDialogListener() {
+
+        DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        mMediaUri = FileUtilities.getOutputMediaFileUri(FileUtilities.MEDIA_TYPE_IMAGE);
+                        if(mMediaUri!= null)
+                            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
+                        else Log.e(TAG_ERR, "An error has ocurred on external storage device");
+                        startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
+                        Log.d(TAG, "Section 1");
+                        break;
+                    case 1:
+                        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                        startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
+                        Log.d(TAG, "Section 2");
+                        break;
+                    case 2:
+                        Log.d(TAG, "Section 3");
+                        break;
+                    case 3:
+                        Log.d(TAG, "Section 4");
+                        break;
+                }
+            }
+        };
+        return dialogListener;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == TAKE_PHOTO_REQUEST) {
+            if(resultCode == RESULT_OK){
+                Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScantIntent.setData(mMediaUri);
+                sendBroadcast(mediaScantIntent);
+
+            }
         }
     }
 }
