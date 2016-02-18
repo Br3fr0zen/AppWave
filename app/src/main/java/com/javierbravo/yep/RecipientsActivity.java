@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 public class RecipientsActivity extends AppCompatActivity {
 
+    public MenuItem mSendMenuItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -23,8 +24,7 @@ public class RecipientsActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_recipients, menu);
         mSendMenuItem =  menu.getItem(0);
@@ -38,6 +38,5 @@ public class RecipientsActivity extends AppCompatActivity {
 
     public MenuItem getmSendMenuItem() {
         return mSendMenuItem;
-    }
-    */
+    }*/
 }

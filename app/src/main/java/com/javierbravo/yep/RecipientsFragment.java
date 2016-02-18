@@ -43,6 +43,12 @@ public class RecipientsFragment extends ListFragment {
     public MenuItem mSendMenuItem;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.activity_recipients_fragment, container,
@@ -54,6 +60,15 @@ public class RecipientsFragment extends ListFragment {
 
         return rootView;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        getActivity().getMenuInflater().inflate(R.menu.menu_recipients, menu);
+        mSendMenuItem = menu.getItem(0);
+        //setmSendMenuItem(mSendMenuItem);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -69,14 +84,6 @@ public class RecipientsFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         mSendMenuItem.setVisible(true);
-
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.menu_recipients, menu);
-        mSendMenuItem = menu.getItem(0);
     }
 
     @Override
@@ -129,7 +136,7 @@ public class RecipientsFragment extends ListFragment {
         });
 
         setListAdapter(adapter);
-        getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
 
         mCurrentUser.saveInBackground(new SaveCallback() {
