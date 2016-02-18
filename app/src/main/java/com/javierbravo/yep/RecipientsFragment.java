@@ -1,17 +1,13 @@
 package com.javierbravo.yep;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,7 +28,6 @@ public class RecipientsFragment extends ListFragment {
     protected ProgressBar spinner;
     protected TextView emptyText;
     protected static final String TAG = "Recipient error";
-    protected GridView mGridView;
 
     protected List<ParseUser> mUsers;
     protected ArrayList<String> usernames;
@@ -50,13 +45,10 @@ public class RecipientsFragment extends ListFragment {
 
         View rootView = inflater.inflate(R.layout.activity_recipients_fragment, container,
                 false);
-        mGridView = (GridView) rootView.findViewById(R.id.friendsGrid);
         emptyText = (TextView) rootView.findViewById(android.R.id.empty);
         emptyText.setVisibility(View.GONE);
         spinner = (ProgressBar) rootView.findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
-
-        mGridView.setEmptyView(emptyText);
 
         return rootView;
     }
@@ -88,7 +80,7 @@ public class RecipientsFragment extends ListFragment {
 
         usernames = new ArrayList<String>();
         objectIds = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_checked, usernames);
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, usernames);
 
 
         ParseQuery query = ParseUser.getQuery();
@@ -110,18 +102,8 @@ public class RecipientsFragment extends ListFragment {
                                 for (ParseUser user : friends) {
                                     Log.d(TAG, "id " + user.getObjectId());
                                     if (objectIds.contains(user.getObjectId())) {
-                                        //getListView().setItemChecked(objectIds.indexOf(user.getObjectId()), false);
-
-                                        // mGridView.setItemChecked(objectIds.indexOf(user.getObjectId()), false);
-                                        getActivity();
+                                        getListView().setItemChecked(objectIds.indexOf(user.getObjectId()), false);
                                         adapter.add(user.getUsername());
-
-                                       /* if(mGridView.getAdapter()== null){
-                                            UserAdapter adapter = new UserAdapter(getActivity(), mUsers);
-                                            mGridView.setAdapter(adapter);
-                                        } else{
-                                            ((UserAdapter)mGridView.getAdapter()).refill(mUsers);
-                                        }*/
                                     }
                                 }
 
@@ -138,8 +120,8 @@ public class RecipientsFragment extends ListFragment {
             }
         });
 
-        mGridView.setAdapter(adapter);
-        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        setListAdapter(adapter);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
 
 
         mCurrentUser.saveInBackground(new SaveCallback() {

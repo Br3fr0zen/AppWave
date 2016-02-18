@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import com.parse.FindCallback;
 import com.parse.ParseFile;
@@ -60,13 +59,13 @@ public class InBoxFragment extends ListFragment {
                         usernames[i] = message.getString(ParseConstants.KEY_SENDER_NAME);
                         i++;
                     }
-                    if (getListView().getAdapter() == null) {
+                    if (getListAdapter() == null) {
                         MessageAdapter adapter = new MessageAdapter(
                                 getListView().getContext(),
                                 mMessage);
                         setListAdapter(adapter);
                     } else {
-                        MessageAdapter adapter = new MessageAdapter(getListView().getContext(), mMessage);
+                        MessageAdapter adapter = new MessageAdapter(getContext(), mMessage);
                         setListAdapter(adapter);
                     }
 

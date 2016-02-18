@@ -1,14 +1,12 @@
 package com.javierbravo.yep;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,11 +24,10 @@ import java.util.List;
 /**
  * Created by manu on 29/01/2016.
  */
-public class FriendsFragment extends Fragment {
+public class FriendsFragment extends ListFragment {
     protected ProgressBar spinner;
     protected TextView emptyText;
     protected static final String TAG = "error";
-    protected GridView mGridView;
 
     protected List<ParseUser> mUsers;
     protected ArrayList<String> usernames;
@@ -44,14 +41,10 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_friends, container,
                 false);
-        mGridView = (GridView)rootView.findViewById(R.id.friendsGrid);
         emptyText = (TextView) rootView.findViewById(android.R.id.empty);
         emptyText.setVisibility(View.GONE);
         spinner = (ProgressBar) rootView.findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
-
-        TextView emptyTextView = (TextView)rootView.findViewById(android.R.id.empty);
-        mGridView.setEmptyView(emptyTextView);
         return rootView;
     }
 
@@ -87,18 +80,8 @@ public class FriendsFragment extends Fragment {
                                 for (ParseUser user : friends) {
                                     Log.d(TAG, "id " + user.getObjectId());
                                     if (objectIds.contains(user.getObjectId())) {
-                                        //getListView().setItemChecked(objectIds.indexOf(user.getObjectId()), false);
-
-                                       // mGridView.setItemChecked(objectIds.indexOf(user.getObjectId()), false);
-                                        getActivity();
+                                        getListView().setItemChecked(objectIds.indexOf(user.getObjectId()), false);
                                         adapter.add(user.getUsername());
-
-                                       /* if(mGridView.getAdapter()== null){
-                                            UserAdapter adapter = new UserAdapter(getActivity(), mUsers);
-                                            mGridView.setAdapter(adapter);
-                                        } else{
-                                            ((UserAdapter)mGridView.getAdapter()).refill(mUsers);
-                                        }*/
                                     }
                                 }
 
@@ -115,8 +98,8 @@ public class FriendsFragment extends Fragment {
             }
         });
 
-        mGridView.setAdapter(adapter);
-        mGridView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        setListAdapter(adapter);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
 
 
         mCurrentUser.saveInBackground(new SaveCallback() {
