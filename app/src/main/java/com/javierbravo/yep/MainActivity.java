@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        if (requestCode == TAKE_VIDEO_REQUEST) {
+        else if (requestCode == TAKE_VIDEO_REQUEST) {
             if(resultCode == RESULT_OK){
                 Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 mediaScantIntent.setData(mMediaUri[0]);
@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        if (requestCode == PICK_PHOTO_REQUEST) {
+       else  if (requestCode == PICK_PHOTO_REQUEST) {
             if(resultCode == RESULT_OK){
                 Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 mediaScantIntent.setData(mMediaUri[0]);
@@ -347,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (requestCode == PICK_VIDEO_REQUEST) {
+       else  if (requestCode == PICK_VIDEO_REQUEST) {
             if(resultCode == RESULT_OK){
                 try {
                    InputStream is = getContentResolver().openInputStream(mMediaUri[0]);

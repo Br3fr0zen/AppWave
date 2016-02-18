@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +40,7 @@ public class RecipientsFragment extends ListFragment {
     protected ParseRelation<ParseUser> mFriendsRelation;
 
     public RecipientsActivity ra = (RecipientsActivity)getActivity();
-
+    public MenuItem mSendMenuItem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,9 +68,15 @@ public class RecipientsFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        MenuItem mi = ra.getmSendMenuItem();
-        mi.setVisible(true);
+        mSendMenuItem.setVisible(true);
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        getActivity().getMenuInflater().inflate(R.menu.menu_recipients, menu);
+        mSendMenuItem = menu.getItem(0);
     }
 
     @Override
@@ -80,7 +88,7 @@ public class RecipientsFragment extends ListFragment {
 
         usernames = new ArrayList<String>();
         objectIds = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, usernames);
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_checked, usernames);
 
 
         ParseQuery query = ParseUser.getQuery();

@@ -78,11 +78,12 @@ public class FriendsFragment extends ListFragment {
                         public void done(List<ParseUser> friends, ParseException e) {
                             if (e == null) {
                                 for (ParseUser user : friends) {
+                                    adapter.add(user.getUsername());
                                     Log.d(TAG, "id " + user.getObjectId());
-                                    if (objectIds.contains(user.getObjectId())) {
+                                   /* if (objectIds.contains(user.getObjectId())) {
                                         getListView().setItemChecked(objectIds.indexOf(user.getObjectId()), false);
                                         adapter.add(user.getUsername());
-                                    }
+                                    }*/
                                 }
 
                             } else {
