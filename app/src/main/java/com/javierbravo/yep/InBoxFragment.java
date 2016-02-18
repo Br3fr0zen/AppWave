@@ -27,7 +27,6 @@ import java.util.List;
 public class InBoxFragment extends ListFragment {
 
     protected List<ParseObject> mMessage;
-    protected ProgressBar spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,8 +34,6 @@ public class InBoxFragment extends ListFragment {
         View rootView = inflater.inflate(R.layout.fragment_inbox, container,
                 false);
 
-        spinner = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        spinner.setVisibility(View.GONE);
         return rootView;
     }
 
@@ -53,7 +50,6 @@ public class InBoxFragment extends ListFragment {
 
             @Override
             public void done(List<ParseObject> messages, com.parse.ParseException e) {
-                getActivity().setProgressBarIndeterminateVisibility(false);
 
                 if (e == null) {
                     mMessage = messages;

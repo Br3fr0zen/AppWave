@@ -1,10 +1,13 @@
 package com.javierbravo.yep;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,13 +26,12 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by manu on 29/01/2016.
- */
-public class FriendsFragment extends Fragment {
+
+public class RecipientsFragment extends ListFragment {
+
     protected ProgressBar spinner;
     protected TextView emptyText;
-    protected static final String TAG = "error";
+    protected static final String TAG = "Recipient error";
     protected GridView mGridView;
 
     protected List<ParseUser> mUsers;
@@ -40,21 +42,42 @@ public class FriendsFragment extends Fragment {
     protected ParseUser mCurrentUser;
     protected ParseRelation<ParseUser> mFriendsRelation;
 
+    public RecipientsActivity ra = (RecipientsActivity)getActivity();
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_friends, container,
+
+        View rootView = inflater.inflate(R.layout.activity_recipients_fragment, container,
                 false);
-        mGridView = (GridView)rootView.findViewById(R.id.friendsGrid);
+        mGridView = (GridView) rootView.findViewById(R.id.friendsGrid);
         emptyText = (TextView) rootView.findViewById(android.R.id.empty);
         emptyText.setVisibility(View.GONE);
         spinner = (ProgressBar) rootView.findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
 
-        TextView emptyTextView = (TextView)rootView.findViewById(android.R.id.empty);
-        mGridView.setEmptyView(emptyTextView);
+        mGridView.setEmptyView(emptyText);
+
         return rootView;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
+        switch (id) {
+            case R.id.action_send:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        MenuItem mi = ra.getmSendMenuItem();
+        mi.setVisible(true);
+
+    }
 
     @Override
     public void onResume() {
@@ -65,7 +88,7 @@ public class FriendsFragment extends Fragment {
 
         usernames = new ArrayList<String>();
         objectIds = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, usernames);
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_checked, usernames);
 
 
         ParseQuery query = ParseUser.getQuery();
@@ -89,7 +112,7 @@ public class FriendsFragment extends Fragment {
                                     if (objectIds.contains(user.getObjectId())) {
                                         //getListView().setItemChecked(objectIds.indexOf(user.getObjectId()), false);
 
-                                       // mGridView.setItemChecked(objectIds.indexOf(user.getObjectId()), false);
+                                        // mGridView.setItemChecked(objectIds.indexOf(user.getObjectId()), false);
                                         getActivity();
                                         adapter.add(user.getUsername());
 
@@ -116,7 +139,7 @@ public class FriendsFragment extends Fragment {
         });
 
         mGridView.setAdapter(adapter);
-        mGridView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
 
         mCurrentUser.saveInBackground(new SaveCallback() {
@@ -131,4 +154,6 @@ public class FriendsFragment extends Fragment {
             }
         });
     }
+
+
 }
