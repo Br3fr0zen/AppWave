@@ -61,7 +61,7 @@ public class InBoxFragment extends ListFragment {
                     }
                     if (getListAdapter() == null) {
                         MessageAdapter adapter = new MessageAdapter(
-                                getListView().getContext(),
+                                getActivity(),
                                 mMessage);
                         setListAdapter(adapter);
                     } else {

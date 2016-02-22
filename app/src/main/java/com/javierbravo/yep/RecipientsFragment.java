@@ -1,6 +1,12 @@
 package com.javierbravo.yep;
 
+
+import android.animation.AnimatorSet;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,14 +19,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,14 +48,22 @@ public class RecipientsFragment extends ListFragment {
 
     protected ParseUser mCurrentUser;
     protected ParseRelation<ParseUser> mFriendsRelation;
+    //Manu Viernes
 
-    public RecipientsActivity ra = (RecipientsActivity)getActivity();
+    protected Uri mMediaUri;
+    protected String mFileType;
+
+    public RecipientsActivity ra = (RecipientsActivity) getActivity();
     public MenuItem mSendMenuItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        Intent intent = getActivity().getIntent();
+        mMediaUri = intent.getData();
+        mFileType = intent.getStringExtra(ParseConstants.KEY_FILE_TYPE);
+
     }
 
     @Override
@@ -71,19 +89,59 @@ public class RecipientsFragment extends ListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        switch (id) {
+
+        switch (item.getItemId()) {
             case R.id.action_send:
-                return true;
+                //Manu Viernes
+                ParseObject message = createMessage();
+                if(message == null){
+                    // error
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage(R.string.error_file_message)
+                            .setTitle(R.string.error_file_message_title)
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                } else {
+                    send(message);
+                    ra.finish();
+                }
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void send(ParseObject message) {
+        message.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null){
+                    Toast.makeText(getActivity(),"Mensaje Enviado",Toast.LENGTH_SHORT).show();
+                }else{
+                    Log.e(TAG, "ParseException caught: ", e);
+                    getString(R.string.error_file_message);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage(R.string.error_file_message)
+                            .setTitle(R.string.error_file_message_title)
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                }
+            }
+        });
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        mSendMenuItem.setVisible(true);
+        if (l.getCheckedItemCount() > 0) {
+            mSendMenuItem.setVisible(true);
+        } else {
+            mSendMenuItem.setVisible(false);
+        }
     }
 
     @Override
@@ -150,6 +208,42 @@ public class RecipientsFragment extends ListFragment {
                 }
             }
         });
+    }
+
+    //Manu Viernes
+    protected ParseObject createMessage() {
+        ParseObject message = new ParseObject(ParseConstants.CLASS_MESSAGES);
+        message.put(ParseConstants.KEY_SENDER_ID, ParseUser.getCurrentUser().getObjectId());
+        message.put(ParseConstants.KEY_SENDER_NAME, ParseUser.getCurrentUser().getUsername());
+        message.put(ParseConstants.KEY_RECIPIENT_IDS, getRecipientIds());
+        message.put(ParseConstants.KEY_FILE_TYPE, mFileType);
+        byte[] fileBytes = FileHelper.getByteArrayFromFile(getActivity(), mMediaUri);
+        if (fileBytes == null) {
+            return null;
+        } else {
+            if (mFileType.equals(ParseConstants.TYPE_IMAGE)) {
+                fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+
+                String fileName = FileHelper.getFileName(getActivity(), mMediaUri, mFileType);
+                ParseFile file = new ParseFile(fileName, fileBytes);
+                message.put(ParseConstants.KEY_FILE,file);
+                return message;
+            }
+        }
+
+
+        return message;
+    }
+
+    //Manu Viernes
+    private ArrayList<String> getRecipientIds() {
+        ArrayList<String> recipientList = new ArrayList<String>();
+        for (int i = 0; i < getListView().getCount(); i++) {
+            if (getListView().isItemChecked(i)) {
+                recipientList.add(mUsers.get(i).getObjectId());
+            }
+        }
+        return recipientList;
     }
 
 
