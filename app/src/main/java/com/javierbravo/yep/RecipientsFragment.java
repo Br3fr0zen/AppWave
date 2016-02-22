@@ -1,12 +1,10 @@
 package com.javierbravo.yep;
 
 
-import android.animation.AnimatorSet;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +28,6 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +50,6 @@ public class RecipientsFragment extends ListFragment {
     protected Uri mMediaUri;
     protected String mFileType;
 
-    public RecipientsActivity ra = (RecipientsActivity) getActivity();
     public MenuItem mSendMenuItem;
 
     @Override
@@ -84,7 +80,6 @@ public class RecipientsFragment extends ListFragment {
         super.onCreateOptionsMenu(menu, inflater);
         getActivity().getMenuInflater().inflate(R.menu.menu_recipients, menu);
         mSendMenuItem = menu.getItem(0);
-        //setmSendMenuItem(mSendMenuItem);
     }
 
     @Override
@@ -106,7 +101,7 @@ public class RecipientsFragment extends ListFragment {
 
                 } else {
                     send(message);
-                    ra.finish();
+                    getActivity().finish();
                 }
             return true;
         }
@@ -211,27 +206,29 @@ public class RecipientsFragment extends ListFragment {
     }
 
     //Manu Viernes
-    protected ParseObject createMessage() {
+    public ParseObject createMessage() {
+        byte[] fileBytes;
         ParseObject message = new ParseObject(ParseConstants.CLASS_MESSAGES);
         message.put(ParseConstants.KEY_SENDER_ID, ParseUser.getCurrentUser().getObjectId());
         message.put(ParseConstants.KEY_SENDER_NAME, ParseUser.getCurrentUser().getUsername());
         message.put(ParseConstants.KEY_RECIPIENT_IDS, getRecipientIds());
         message.put(ParseConstants.KEY_FILE_TYPE, mFileType);
-        byte[] fileBytes = FileHelper.getByteArrayFromFile(getActivity(), mMediaUri);
-        if (fileBytes == null) {
-            return null;
-        } else {
-            if (mFileType.equals(ParseConstants.TYPE_IMAGE)) {
-                fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+        if (mMediaUri != null){
+            fileBytes = FileHelper.getByteArrayFromFile(getActivity().getApplicationContext(), mMediaUri);
 
-                String fileName = FileHelper.getFileName(getActivity(), mMediaUri, mFileType);
-                ParseFile file = new ParseFile(fileName, fileBytes);
-                message.put(ParseConstants.KEY_FILE,file);
-                return message;
+            if (fileBytes == null) {
+                return null;
+            } else {
+                if (mFileType.equals(ParseConstants.TYPE_IMAGE)) {
+                    fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+
+                    String fileName = FileHelper.getFileName(getActivity().getApplicationContext(), mMediaUri, mFileType);
+                    ParseFile file = new ParseFile(fileName, fileBytes);
+                    message.put(ParseConstants.KEY_FILE,file);
+                    return message;
+                }
             }
         }
-
-
         return message;
     }
 
@@ -245,6 +242,5 @@ public class RecipientsFragment extends ListFragment {
         }
         return recipientList;
     }
-
 
 }

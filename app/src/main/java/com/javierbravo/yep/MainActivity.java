@@ -60,8 +60,11 @@ public class MainActivity extends AppCompatActivity {
     private GoogleApiClient client;
     private String fileType;
 
+    public Uri mMediaUri;
+    public Uri mMediaUriResult;
 
-    final Uri[] mMediaUri = new Uri[1];
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,25 +268,25 @@ public class MainActivity extends AppCompatActivity {
 
     private DialogInterface.OnClickListener mDialogListener() {
 
-
         DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
                         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        mMediaUri[0] = FileUtilities.getOutputMediaFileUri(FileUtilities.MEDIA_TYPE_IMAGE);
-                        if (mMediaUri[0] != null)
-                            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri[0]);
-                        else Log.e(TAG_ERR, "An error has ocurred on external storage device");
-                        startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
-                        Log.d(TAG, "Section 1");
-                        break;
+                    mMediaUri = FileUtilities.getOutputMediaFileUri(FileUtilities.MEDIA_TYPE_IMAGE);
+                    if (mMediaUri != null)
+                        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
+                    else Log.e(TAG_ERR, "An error has ocurred on external storage device");
+                    startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
+                    Log.d(TAG, "Section 1");
+                    break;
                     case 1:
                         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                        mMediaUri[0] = FileUtilities.getOutputMediaFileUri(FileUtilities.MEDIA_TYPE_VIDEO);
-                        if (mMediaUri[0] != null) {
-                            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri[0]);
+                        mMediaUri = FileUtilities.getOutputMediaFileUri(FileUtilities.MEDIA_TYPE_VIDEO);
+                        if (mMediaUri != null) {
+                            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
                             takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
                             takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
                         } else Log.e(TAG_ERR, "An error has ocurred on external storage device");
@@ -313,55 +316,53 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Intent intent = new Intent(MainActivity.this, RecipientsActivity.class);
-
+        mMediaUriResult  = data.getData();
 
         if (requestCode == TAKE_PHOTO_REQUEST) {
             //Manu Viernes
-            fileType = "image";
+            fileType = ParseConstants.TYPE_IMAGE;
             if (resultCode == RESULT_OK) {
                 Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                mediaScantIntent.setData(mMediaUri[0]);
-                mediaScantIntent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
+                mediaScantIntent.setData(mMediaUriResult);
                 sendBroadcast(mediaScantIntent);
+
             }
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.setData(mMediaUri[0]);
+            intent.setData(mMediaUriResult);
             intent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
             startActivity(intent);
 
         } else if (requestCode == TAKE_VIDEO_REQUEST) {
             //Manu Viernes
-            fileType = "video";
+            fileType = ParseConstants.TYPE_VIDEO;
             if (resultCode == RESULT_OK) {
                 Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                mediaScantIntent.setData(mMediaUri[0]);
-                mediaScantIntent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
+                mediaScantIntent.setData(mMediaUriResult);
                 sendBroadcast(mediaScantIntent);
             }
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.setData(mMediaUri[0]);
+            intent.setData(mMediaUriResult);
             intent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
             startActivity(intent);
 
         } else if (requestCode == PICK_PHOTO_REQUEST) {
             //Manu Viernes
-            fileType = "image";
+            fileType = ParseConstants.TYPE_IMAGE;
             if (resultCode == RESULT_OK) {
                 Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                mediaScantIntent.setData(mMediaUri[0]);
-                mediaScantIntent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
+                mediaScantIntent.setData(mMediaUriResult);
                 sendBroadcast(mediaScantIntent);
                 if (data != null) {
-                    mMediaUri[0] = data.getData();
+                    mMediaUriResult = data.getData();
                 } else Log.e(TAG_ERR, "Error at picking a photo from gallery");
             }
 
         } else if (requestCode == PICK_VIDEO_REQUEST) {
             //Manu Viernes
-            fileType = "video";
+            fileType = ParseConstants.TYPE_VIDEO;
             if (resultCode == RESULT_OK) {
                 try {
-                    InputStream is = getContentResolver().openInputStream(mMediaUri[0]);
+                    InputStream is = getContentResolver().openInputStream(mMediaUriResult);
                     int fileSize = is.available();
                     if (fileSize > FILE_SIZE_LIMIT) {
                         String userTitle = getResources().getString(R.string.video_size_title);
@@ -377,8 +378,7 @@ public class MainActivity extends AppCompatActivity {
                                 }).show();
                     }
                     Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    mediaScantIntent.setData(mMediaUri[0]);
-                    mediaScantIntent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
+                    mediaScantIntent.setData(mMediaUriResult);
                     sendBroadcast(mediaScantIntent);
 
                     is.close();
@@ -389,8 +389,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             if (data != null) {
-                mMediaUri[0] = data.getData();
+                mMediaUriResult = data.getData();
             }
         }
     }
+
 }
