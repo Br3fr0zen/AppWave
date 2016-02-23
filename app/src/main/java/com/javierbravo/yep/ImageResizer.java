@@ -1,13 +1,8 @@
 package com.javierbravo.yep;
 
 /**
-
- *
-
  * Created by Carlos on 08/02/2015.
-
  */
-
 
 
 import android.graphics.Bitmap;
@@ -15,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import android.util.Pair;
-
 
 
 public class ImageResizer {
@@ -43,11 +37,9 @@ public class ImageResizer {
         BitmapFactory.Options options = new BitmapFactory.Options();
 
 
-
         // inSampleSize is used to sample smaller versions of the image
 
         options.inSampleSize = calculateInSampleSize(options, targetWidth, targetHeight);
-
 
 
         // Decode bitmap with inSampleSize and target dimensions set
@@ -55,11 +47,9 @@ public class ImageResizer {
         options.inJustDecodeBounds = false;
 
 
-
         Bitmap reducedBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length, options);
 
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(reducedBitmap, targetWidth, targetHeight, false);
-
 
 
         return resizedBitmap;
@@ -67,11 +57,8 @@ public class ImageResizer {
     }
 
 
-
     public static Bitmap resizeImageMaintainAspectRatio(byte[] imageData, int shorterSideTarget) {
-
         Pair<Integer, Integer> dimensions = getDimensions(imageData);
-
 
 
         // Determine the aspect ratio (width/height) of the image
@@ -83,11 +70,9 @@ public class ImageResizer {
         float ratio = (float) dimensions.first / dimensions.second;
 
 
-
         int targetWidth;
 
         int targetHeight;
-
 
 
         // Determine portrait or landscape
@@ -100,9 +85,7 @@ public class ImageResizer {
 
             targetWidth = Math.round(shorterSideTarget * ratio);
 
-        }
-
-        else {
+        } else {
 
             // Portrait image. ratio (width/height) is < 1
 
@@ -113,11 +96,9 @@ public class ImageResizer {
         }
 
 
-
         return resizeImage(imageData, targetWidth, targetHeight);
 
     }
-
 
 
     public static Pair<Integer, Integer> getDimensions(byte[] imageData) {
@@ -127,7 +108,6 @@ public class ImageResizer {
         BitmapFactory.Options options = new BitmapFactory.Options();
 
 
-
         // Only decode the bounds of the image, not the whole image, to get the dimensions
 
         options.inJustDecodeBounds = true;
@@ -135,11 +115,9 @@ public class ImageResizer {
         BitmapFactory.decodeByteArray(imageData, 0, imageData.length, options);
 
 
-
         return new Pair<>(options.outWidth, options.outHeight);
 
     }
-
 
 
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -153,15 +131,12 @@ public class ImageResizer {
         int inSampleSize = 1;
 
 
-
         if (height > reqHeight || width > reqWidth) {
-
 
 
             final int halfHeight = height / 2;
 
             final int halfWidth = width / 2;
-
 
 
             // Calculate the largest inSampleSize value that is a power of 2 and keeps both
@@ -177,7 +152,6 @@ public class ImageResizer {
             }
 
         }
-
 
 
         return inSampleSize;

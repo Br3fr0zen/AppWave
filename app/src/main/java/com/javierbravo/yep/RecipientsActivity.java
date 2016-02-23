@@ -20,7 +20,6 @@ public class RecipientsActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new RecipientsFragment())
                     .commit();
-
         }
     }
 

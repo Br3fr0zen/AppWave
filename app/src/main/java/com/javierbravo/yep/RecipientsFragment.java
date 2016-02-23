@@ -28,6 +28,10 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,7 +94,7 @@ public class RecipientsFragment extends ListFragment {
             case R.id.action_send:
                 //Manu Viernes
                 ParseObject message = createMessage();
-                if(message == null){
+                if (message == null) {
                     // error
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setMessage(R.string.error_file_message)
@@ -103,7 +107,7 @@ public class RecipientsFragment extends ListFragment {
                     send(message);
                     getActivity().finish();
                 }
-            return true;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -112,9 +116,9 @@ public class RecipientsFragment extends ListFragment {
         message.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null){
-                    Toast.makeText(getActivity(),"Mensaje Enviado",Toast.LENGTH_SHORT).show();
-                }else{
+                if (e == null) {
+                    Toast.makeText(getActivity(), "Mensaje Enviado", Toast.LENGTH_SHORT).show();
+                } else {
                     Log.e(TAG, "ParseException caught: ", e);
                     getString(R.string.error_file_message);
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -207,30 +211,30 @@ public class RecipientsFragment extends ListFragment {
 
     //Manu Viernes
     public ParseObject createMessage() {
-        byte[] fileBytes;
         ParseObject message = new ParseObject(ParseConstants.CLASS_MESSAGES);
         message.put(ParseConstants.KEY_SENDER_ID, ParseUser.getCurrentUser().getObjectId());
         message.put(ParseConstants.KEY_SENDER_NAME, ParseUser.getCurrentUser().getUsername());
         message.put(ParseConstants.KEY_RECIPIENT_IDS, getRecipientIds());
         message.put(ParseConstants.KEY_FILE_TYPE, mFileType);
-        if (mMediaUri != null){
-            fileBytes = FileHelper.getByteArrayFromFile(getActivity().getApplicationContext(), mMediaUri);
 
-            if (fileBytes == null) {
-                return null;
-            } else {
-                if (mFileType.equals(ParseConstants.TYPE_IMAGE)) {
-                    fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+        byte[] fileBytes = FileHelper.getByteArrayFromFile(getActivity(), mMediaUri);
 
-                    String fileName = FileHelper.getFileName(getActivity().getApplicationContext(), mMediaUri, mFileType);
-                    ParseFile file = new ParseFile(fileName, fileBytes);
-                    message.put(ParseConstants.KEY_FILE,file);
-                    return message;
-                }
-            }
+        if (fileBytes == null) {
+            return null;
         }
-        return message;
+        else {
+           /* if (mFileType.equals(ParseConstants.TYPE_IMAGE)) {
+                fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+            }*/
+
+            String fileName = FileHelper.getFileName(getActivity(), mMediaUri, mFileType);
+            ParseFile file = new ParseFile(fileName, fileBytes);
+            message.put(ParseConstants.KEY_FILE, file);
+
+            return message;
+        }
     }
+
 
     //Manu Viernes
     private ArrayList<String> getRecipientIds() {
