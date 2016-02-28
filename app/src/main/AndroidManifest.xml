@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-
     <uses-feature android:name="android.hardware.camera2" />
 
     <application
@@ -61,6 +60,7 @@
             android:name=".RecipientsActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ViewImageActivity"></activity>
     </application>
 
 </manifest>

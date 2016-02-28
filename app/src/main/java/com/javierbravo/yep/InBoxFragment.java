@@ -4,12 +4,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -25,13 +30,21 @@ import java.util.List;
 
 public class InBoxFragment extends ListFragment {
 
+    protected static final String TAG = "Error";
+
     protected List<ParseObject> mMessage;
+    private ArrayList<String> messages;
+    private ArrayAdapter adapter;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_inbox, container,
                 false);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.SwipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
 
         return rootView;
     }
@@ -40,7 +53,9 @@ public class InBoxFragment extends ListFragment {
     public void onResume() {
         super.onResume();
 
-        getActivity().setProgressBarIndeterminateVisibility(true);
+        messages = new ArrayList<>();
+        adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, messages);
+        setListAdapter(adapter);
 
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.CLASS_MESSAGES);
         query.whereEqualTo(ParseConstants.KEY_RECIPIENT_IDS, ParseUser.getCurrentUser().getObjectId());
@@ -50,28 +65,21 @@ public class InBoxFragment extends ListFragment {
             @Override
             public void done(List<ParseObject> messages, com.parse.ParseException e) {
 
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+
                 if (e == null) {
                     mMessage = messages;
 
-                    String[] usernames = new String[mMessage.size()];
-                    int i = 0;
                     for (ParseObject message : mMessage) {
-                        usernames[i] = message.getString(ParseConstants.KEY_SENDER_NAME);
-                        i++;
+                        adapter.add(message.getString(ParseConstants.KEY_SENDER_NAME));
                     }
-                    if (getListAdapter() == null) {
-                        MessageAdapter adapter = new MessageAdapter(
-                                getActivity(),
-                                mMessage);
-                        setListAdapter(adapter);
-                    } else {
-                       /* MessageAdapter adapter = new MessageAdapter(getActivity(), mMessage);
-                        setListAdapter(adapter);*/
-                    }
-
-
+                    MessageAdapter mssgAdapter = new MessageAdapter(getListView().getContext(), mMessage);
+                    setListAdapter(mssgAdapter);
+                } else {
+                    showUserError(e);
                 }
-
             }
         });
     }
@@ -85,33 +93,45 @@ public class InBoxFragment extends ListFragment {
         ParseFile file = message.getParseFile(ParseConstants.KEY_FILE);
         Uri fileUri = Uri.parse(file.getUrl());
 
-        if (messageType.equals(ParseConstants.TYPE_IMAGE)) {
-            // view the image
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            intent.setData(fileUri);
-            startActivity(intent);
-        } else {
-            // view the video
-            Intent intent = new Intent(Intent.ACTION_VIEW, fileUri);
-            intent.setDataAndType(fileUri, "video/*");
-            startActivity(intent);
+        if(fileUri != null){
+            if (messageType.equals(ParseConstants.TYPE_IMAGE)) {
+                Intent intent = new Intent(getActivity(), ViewImageActivity.class);
+                intent.setData(fileUri);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_VIEW, fileUri);
+                intent.setDataAndType(fileUri, "video/*");
+                startActivity(intent);
+            }
         }
 
-        // Delete it!
         List<String> ids = message.getList(ParseConstants.KEY_RECIPIENT_IDS);
 
-        if (ids.size() == 1) {
-            // last recipient - delete the whole thing!
-            message.deleteInBackground();
-        } else {
-            // remove the recipient and save
+        if (ids.size() > 1) {
             ids.remove(ParseUser.getCurrentUser().getObjectId());
-
-            ArrayList<String> idsToRemove = new ArrayList<String>();
-            idsToRemove.add(ParseUser.getCurrentUser().getObjectId());
-
-            message.removeAll(ParseConstants.KEY_RECIPIENT_IDS, idsToRemove);
+            ArrayList<String> removeIds = new ArrayList();
+            removeIds.add(ParseUser.getCurrentUser().getObjectId());
+            message.removeAll(ParseConstants.KEY_RECIPIENT_IDS, removeIds);
             message.saveInBackground();
+        } else {
+            message.deleteInBackground();
         }
     }
+
+    private void showUserError(ParseException e) {
+        Log.e(TAG, "ParseException caught: ", e);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.error_load_users)
+                .setMessage(e.getMessage())
+                .setPositiveButton(android.R.string.ok, null);
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            onResume();
+        }
+    };
 }

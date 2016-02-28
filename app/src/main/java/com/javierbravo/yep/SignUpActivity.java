@@ -8,8 +8,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,8 +42,6 @@ public class SignUpActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.passwordField);
         email = (EditText) findViewById(R.id.emailField);
 
-        //Se utilizará cuando haya un botón de cancelar registro...
-
         btnSignUp = (Button) findViewById(R.id.signupButton);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,22 +56,20 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
     }
 
-    protected void signUpClick(){
+    protected void signUpClick() {
 
         final String usr = username.getText().toString().replace(" ", "");
         final String pass = password.getText().toString().replace(" ", "");
         final String em = email.getText().toString().replace(" ", "");
 
         hiddingKeyboard();
-        buttonAnimationHide(btnSignUp);
+
         final ParseUser newUser = new ParseUser();
 
-        //Method to set data.
         trimSpaces(newUser, usr, pass, em);
 
         newUser.signUpInBackground(new SignUpCallback() {
@@ -83,51 +77,19 @@ public class SignUpActivity extends AppCompatActivity {
                 if (e == null) {
                     checkUser();
                 } else if ((usr.isEmpty() || pass.isEmpty()) || em.isEmpty()) {
-                    String emptyTitle = getResources().getString(R.string.empty_title);
-                    String emptyMessage = getResources().getString(R.string.empty_field_message);
-                    new AlertDialog.Builder(SignUpActivity.this)
-                            .setTitle(emptyTitle)
-                            .setMessage(emptyMessage)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    buttonAnimationShow(btnSignUp);
-                                }
-                            }).show();
+                    errorEmptyFields();
+
                 } else if (!em.contentEquals(EMAIL_VERIFICATION)) {
-                    String userTitle = getResources().getString(R.string.user_title);
-                    String userMessage = getResources().getString(R.string.email_fail_message);
-                    new AlertDialog.Builder(SignUpActivity.this)
-                            .setTitle(userTitle)
-                            .setMessage(userMessage)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    buttonAnimationShow(btnSignUp);
-                                }
-                            }).show();
+                    errorEmailVerification();
                 }
             }
         });
-}
-
-    protected void buttonAnimationHide(Button btnSignUp) {
-        Animation btnRight = AnimationUtils.loadAnimation(this, R.anim.button_anim_bounce_right);
-        btnSignUp.startAnimation(btnRight);
-    }
-
-    protected void buttonAnimationShow(Button btnSignUp) {
-        Animation btnLeft = AnimationUtils.loadAnimation(this, R.anim.button_anim_bounce_left);
-        btnSignUp.startAnimation(btnLeft);
     }
 
     protected void hiddingKeyboard() {
         InputMethodManager inputManager = (InputMethodManager) this
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        //check if no view has focus:
         View view = this.getCurrentFocus();
         if (view == null)
             return;
@@ -142,11 +104,39 @@ public class SignUpActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
     }
 
-    protected ParseUser trimSpaces(ParseUser newUser, String usr, String pass, String em){
+    protected ParseUser trimSpaces(ParseUser newUser, String usr, String pass, String em) {
         newUser.setUsername(usr);
         newUser.setPassword(pass);
         newUser.setEmail(em);
         return newUser;
+    }
+
+    private void errorEmailVerification() {
+        String userTitle = getResources().getString(R.string.user_title);
+        String userMessage = getResources().getString(R.string.email_fail_message);
+        new AlertDialog.Builder(SignUpActivity.this)
+                .setTitle(userTitle)
+                .setMessage(userMessage)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).show();
+    }
+
+    private void errorEmptyFields() {
+        String emptyTitle = getResources().getString(R.string.empty_title);
+        String emptyMessage = getResources().getString(R.string.empty_field_message);
+        new AlertDialog.Builder(SignUpActivity.this)
+                .setTitle(emptyTitle)
+                .setMessage(emptyMessage)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).show();
     }
 }
 

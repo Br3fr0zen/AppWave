@@ -71,12 +71,8 @@ public class FileHelper {
                     }
                 Log.e(TAG, e.getMessage());
             }
-
-
         }
-
-
-        return new byte[0];
+        return fileBytes;
     }
 
     public static byte[] reduceImageForUpload(byte[] imageData) {
@@ -87,20 +83,18 @@ public class FileHelper {
         try {
             outputStream.close();
         } catch (IOException e) {
-            //e.printStackTrace();
         }
         return reducedData;
     }
-
 
     public static String getFileName(Context context, Uri uri, String fileType) {
         String fileName = "uploaded_file.";
         if (fileType.equals(ParseConstants.TYPE_IMAGE)) {
             fileName += "png";
         } else {
-            //Forvideo,wewanttogettheactualfileextension
+            //For video, we want to get the actual file extension
             if (uri.getScheme().equals("content")) {
-                //doitusingthemimetype
+                //do it using the mime type
                 String mimeType = context.getContentResolver().getType(uri);
                 int slashIndex = mimeType.indexOf("/");
                 String fileExtension = mimeType.substring(slashIndex + 1);

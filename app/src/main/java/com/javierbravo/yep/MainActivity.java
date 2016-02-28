@@ -139,14 +139,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
-                return true;
+                break;
+
             case R.id.action_add_friend:
                 Intent intent2 = new Intent(this, EditFriendsActivity.class);
                 startActivity(intent2);
-                return true;
+                break;
+
             case R.id.action_camera:
                 dialogCameraChoices();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -274,11 +276,9 @@ public class MainActivity extends AppCompatActivity {
                         if (mMediaUri != null) {
                             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
                             startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST);
-                        }
-                        else Log.e(TAG_ERR, "An error has ocurred on external storage device");
-
-                        Log.d(TAG, "Section 1");
+                        } else showUserError();
                         break;
+
                     case 1:
                         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                         mMediaUri = FileUtilities.getOutputMediaFileUri(FileUtilities.MEDIA_TYPE_VIDEO);
@@ -287,21 +287,20 @@ public class MainActivity extends AppCompatActivity {
                             takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
                             takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
                             startActivityForResult(takeVideoIntent, TAKE_VIDEO_REQUEST);
-                        } else Log.e(TAG_ERR, "An error has ocurred on external storage device");
-                        Log.d(TAG, "Section 2");
+                        } else showUserError();
                         break;
+
                     case 2:
                         Intent choosePhotoIntent = new Intent(Intent.ACTION_GET_CONTENT);
                         choosePhotoIntent.setType("image/*");
                         startActivityForResult(choosePhotoIntent, PICK_PHOTO_REQUEST);
-                        Log.d(TAG, "Section 3");
                         break;
+
                     case 3:
                         Intent chooseVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
                         chooseVideoIntent.setType("video/*");
                         Toast.makeText(getApplicationContext(), "Videos\'s duration shouldn\'t be longer than 10s", Toast.LENGTH_LONG).show();
                         startActivityForResult(chooseVideoIntent, PICK_VIDEO_REQUEST);
-                        Log.d(TAG, "Section 4");
                         break;
                 }
             }
@@ -311,97 +310,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /*super.onActivityResult(requestCode, resultCode, data);
-        Intent intent = new Intent(MainActivity.this, RecipientsActivity.class);
-        //Uri mMediaUri = data.getData();
-
-        if (requestCode == TAKE_PHOTO_REQUEST) {
-            //Manu Viernes
-            fileType = ParseConstants.TYPE_IMAGE;
-            if (resultCode == RESULT_OK) {
-                Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                mediaScantIntent.setData(mMediaUri);
-                sendBroadcast(mediaScantIntent);
-
-            }
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.setData(mMediaUri);
-            intent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
-            startActivity(intent);
-
-        } else if (requestCode == TAKE_VIDEO_REQUEST) {
-            //Manu Viernes
-            fileType = ParseConstants.TYPE_VIDEO;
-            if (resultCode == RESULT_OK) {
-                Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                mediaScantIntent.setData(mMediaUri);
-                sendBroadcast(mediaScantIntent);
-            }
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.setData(mMediaUri);
-            intent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
-            startActivity(intent);
-
-        } else if (requestCode == PICK_PHOTO_REQUEST) {
-            //Manu Viernes
-            fileType = ParseConstants.TYPE_IMAGE;
-            if (resultCode == RESULT_OK) {
-                Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                mediaScantIntent.setData(mMediaUri);
-                sendBroadcast(mediaScantIntent);
-                if (data != null) {
-                    mMediaUri = data.getData();
-                } else Log.e(TAG_ERR, "Error at picking a photo from gallery");
-            }
-
-        } else if (requestCode == PICK_VIDEO_REQUEST) {
-            //Manu Viernes
-            fileType = ParseConstants.TYPE_VIDEO;
-            if (resultCode == RESULT_OK) {
-                try {
-                    InputStream is = getContentResolver().openInputStream(mMediaUri);
-                    int fileSize = is.available();
-                    if (fileSize > FILE_SIZE_LIMIT) {
-                        String userTitle = getResources().getString(R.string.video_size_title);
-                        String userMessage = getResources().getString(R.string.video_size);
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle(userTitle)
-                                .setMessage(userMessage)
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                }).show();
-                    }
-                    Intent mediaScantIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    mediaScantIntent.setData(mMediaUri);
-                    sendBroadcast(mediaScantIntent);
-
-                    is.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (data != null) {
-                mMediaUri = data.getData();
-            }
-        }*/
-
-
-
-
-
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
             if (requestCode == PICK_PHOTO_REQUEST || requestCode == PICK_VIDEO_REQUEST) {
                 if (data == null) {
                     Toast.makeText(this, getString(R.string.error_file_message), Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else {
                     mMediaUri = data.getData();
                 }
 
@@ -414,16 +329,13 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         inputStream = getContentResolver().openInputStream(mMediaUri);
                         fileSize = inputStream.available();
-                    }
-                    catch (FileNotFoundException e) {
+                    } catch (FileNotFoundException e) {
                         Toast.makeText(this, R.string.error_file_message, Toast.LENGTH_LONG).show();
                         return;
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         Toast.makeText(this, R.string.error_file_message, Toast.LENGTH_LONG).show();
                         return;
-                    }
-                    finally {
+                    } finally {
                         try {
                             inputStream.close();
                         } catch (IOException e) { /* Intentionally blank */ }
@@ -434,8 +346,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                 }
-            }
-            else {
+            } else {
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 mediaScanIntent.setData(mMediaUri);
                 sendBroadcast(mediaScanIntent);
@@ -447,18 +358,25 @@ public class MainActivity extends AppCompatActivity {
             String fileType;
             if (requestCode == PICK_PHOTO_REQUEST || requestCode == TAKE_PHOTO_REQUEST) {
                 fileType = ParseConstants.TYPE_IMAGE;
-            }
-            else {
+            } else {
                 fileType = ParseConstants.TYPE_VIDEO;
             }
 
             recipientsIntent.putExtra(ParseConstants.KEY_FILE_TYPE, fileType);
             startActivity(recipientsIntent);
-        }
-        else if (resultCode != RESULT_CANCELED) {
+        } else if (resultCode != RESULT_CANCELED) {
             Toast.makeText(this, R.string.error_file_message, Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    private void showUserError() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.error_file_message)
+                .setTitle(R.string.error_file_message_title)
+                .setPositiveButton(android.R.string.ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

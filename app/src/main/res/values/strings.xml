@@ -26,8 +26,9 @@
     <string name="video_size_title">Invalid video</string>
     <string name="video_size">The video\'s size isn\'t supported, please choose one under 10MB </string>
     <string name="action_add_send">Send</string>
-    <string name="error_file_message">Ha ocurrido un error con el fichero seleccionado, selecciona otro fichero</string>
-    <string name="error_file_message_title">Error al enviar archivo</string>
+    <string name="error_file_message">An error has occured with the selected file,please choose another file</string>
+    <string name="error_file_message_title">Error, can\'t send this file</string>
+    <string name="error_load_users">Error, can\'t load user list</string>
     <string-array name="camera_choices">
         <item name="choice_photo">Take a picture</item>
         <item name="choice_video">Tap a video</item>

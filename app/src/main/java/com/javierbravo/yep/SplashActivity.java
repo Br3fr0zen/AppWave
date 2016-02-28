@@ -49,18 +49,13 @@ public class SplashActivity extends Activity {
                     if(progressStatus[0] == LOADING_COMPLETED)
                         checkUser();
 
-                    // Update the progress bar and display the
-                    //current value in the text view
                     handler.post(new Runnable() {
                         public void run() {
                             finalProgressBar.setProgress(progressStatus[0]);
                             finalTextView.setText(progressStatus[0] + "/" + finalProgressBar.getMax());
                         }
-
                     });
                     try {
-                        // Sleep for 200 milliseconds.
-                        //Just to display the progress slowly
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -68,12 +63,11 @@ public class SplashActivity extends Activity {
                 }
             }
         }).start();
-
     }
+
     protected void checkUser() {
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
     }
 }

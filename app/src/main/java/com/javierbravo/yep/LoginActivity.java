@@ -6,16 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.LogInCallback;
@@ -24,16 +20,12 @@ import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static final int LOADING_COMPLETED = 100;
     protected EditText username, password;
     protected Button logIn;
     protected TextView mSignUpTextView;
 
-    protected ProgressBar progressBar = null;
-    protected TextView textViewProgress = null;
     protected TextView textTitle;
     protected TextView textSubtitle;
-    protected Handler handler = new Handler();
 
 
     @Override
@@ -74,7 +66,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        // Inflate the menu; this adds items to the action bar if it is present..
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -90,8 +81,6 @@ public class LoginActivity extends AppCompatActivity {
         final String pass = password.getText().toString();
         hiddingKeyboard();
 
-        buttonAnimationHide(logIn);
-
         ParseUser.logInInBackground(usr, pass, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
@@ -99,18 +88,8 @@ public class LoginActivity extends AppCompatActivity {
                     mSignUpTextView.setVisibility(View.INVISIBLE);
                     checkUser();
                 } else {
-                    String wrongLogInTitle = getResources().getString(R.string.user_title);
-                    String wrongLogInMessage = getResources().getString(R.string.wrong_login_message);
-                    new AlertDialog.Builder(LoginActivity.this)
-                            .setTitle(wrongLogInTitle)
-                            .setMessage(wrongLogInMessage)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    buttonAnimationShow(logIn);
-                                }
-                            }).show();
+                    errorMessage();
+
                 }
             }
         });
@@ -120,7 +99,6 @@ public class LoginActivity extends AppCompatActivity {
         InputMethodManager inputManager = (InputMethodManager) this
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        //check if no view has focus:
         View view = this.getCurrentFocus();
         if (view == null)
             return;
@@ -128,21 +106,25 @@ public class LoginActivity extends AppCompatActivity {
         inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    protected void buttonAnimationHide(Button logIn) {
-        Animation btnRight = AnimationUtils.loadAnimation(this, R.anim.button_anim_bounce_right);
-        logIn.startAnimation(btnRight);
-    }
-
-    protected void buttonAnimationShow(Button logIn) {
-        Animation btnLeft = AnimationUtils.loadAnimation(this,R.anim.button_anim_bounce_left);
-        logIn.startAnimation(btnLeft);
-    }
-
     protected void checkUser() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+    }
+
+    private void errorMessage() {
+        String wrongLogInTitle = getResources().getString(R.string.user_title);
+        String wrongLogInMessage = getResources().getString(R.string.wrong_login_message);
+        new AlertDialog.Builder(LoginActivity.this)
+                .setTitle(wrongLogInTitle)
+                .setMessage(wrongLogInMessage)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).show();
     }
 
 }
