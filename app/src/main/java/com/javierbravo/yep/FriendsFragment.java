@@ -61,6 +61,8 @@ public class FriendsFragment extends ListFragment {
         mCurrentUser = ParseUser.getCurrentUser();
         mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
 
+        mFriendsRelation.remove(mCurrentUser);
+
         ParseQuery<ParseUser> query = mFriendsRelation.getQuery();
         query.orderByAscending(ParseConstants.KEY_USERNAME);
         query.setLimit(ParseConstants.MAX_USERS);

@@ -11,7 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -39,6 +42,8 @@ public class RecipientsActivity extends ListActivity {
     protected String mFileType;
 
     public MenuItem mSendMenuItem;
+/*    protected ProgressBar spinner;
+    protected TextView emptyText;*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,10 @@ public class RecipientsActivity extends ListActivity {
         Intent intent = getIntent();
         mMediaUri = intent.getData();
         mFileType = intent.getStringExtra(ParseConstants.KEY_FILE_TYPE);
-
+       /* emptyText = (TextView) findViewById(android.R.id.empty);
+        emptyText.setVisibility(View.GONE);
+        spinner = (ProgressBar) findViewById(R.id.progressBar);
+        spinner.setVisibility(View.GONE);*/
     }
 
     @Override
@@ -67,7 +75,7 @@ public class RecipientsActivity extends ListActivity {
                     showUserError();
                 } else {
                     send(message);
-                    this.finish();
+                    finish();
                 }
                 return true;
         }
@@ -105,7 +113,7 @@ public class RecipientsActivity extends ListActivity {
         mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
 
         ParseQuery query = mFriendsRelation.getQuery();
-        query.orderByAscending(ParseConstants.KEY_USERNAME);
+        query.addAscendingOrder(ParseConstants.KEY_USERNAME);
         query.setLimit(ParseConstants.MAX_USERS);
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override

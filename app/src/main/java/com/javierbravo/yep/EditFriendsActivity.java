@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -37,6 +38,7 @@ public class EditFriendsActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_friends);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     }
 
@@ -72,8 +74,10 @@ public class EditFriendsActivity extends ListActivity {
                 if (e == null) {
                     mUsers = users;
                     for (ParseUser user : mUsers) {
-                        objectIds.add(user.getObjectId());
-                        adapter.add(user.getUsername());
+                        if(!user.getObjectId().equals(mCurrentUser.getObjectId())){
+                            objectIds.add(user.getObjectId());
+                            adapter.add(user.getUsername());
+                        }
                     }
                     ArrayAdapter adapter1 = new ArrayAdapter<>(EditFriendsActivity.this,
                             android.R.layout.simple_list_item_checked,
@@ -107,9 +111,8 @@ public class EditFriendsActivity extends ListActivity {
                 if (e == null) {
                     for (ParseUser user : friends) {
                         Log.d(TAG, "id " + user.getObjectId());
-                        if (objectIds.contains(user.getObjectId())) {
-                            getListView().setItemChecked(objectIds.indexOf(user.getObjectId()), true);
-                        }
+                        if (objectIds.contains(user.getObjectId()))
+                                getListView().setItemChecked(objectIds.indexOf(user.getObjectId()), true);
                     }
 
                 } else {

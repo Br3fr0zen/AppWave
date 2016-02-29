@@ -57,9 +57,9 @@ public class MessageAdapter extends ArrayAdapter<ParseObject> {
         TextView name_label;
     }
 
-   /* public void refill(List<ParseObject> messages) {
+    public void refill(List<ParseObject> messages) {
         mMessages.clear();
         mMessages.addAll(messages);
         notifyDataSetChanged();
-    }*/
+    }
 }
