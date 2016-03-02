@@ -1,6 +1,7 @@
 package com.javierbravo.yep;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.parse.ParseObject;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,12 +37,20 @@ public class MessageAdapter extends ArrayAdapter<ParseObject> {
             holder = new ViewHolder();
             holder.iconImageView = (ImageView) convertView.findViewById(R.id.messageIcon);
             holder.name_label = (TextView) convertView.findViewById(R.id.senderLabel);
+            holder.time_label = (TextView) convertView.findViewById(R.id.timeLabel);
             convertView.setTag(holder);
         }
         else {
             holder = (ViewHolder)convertView.getTag();
         }
         ParseObject message = mMessages.get(position);
+
+        Date createdAt = message.getCreatedAt();
+        long now = new Date().getTime();
+        String convertedDate = DateUtils.getRelativeTimeSpanString(createdAt.getTime(), now, DateUtils.SECOND_IN_MILLIS).toString();
+
+        holder.time_label.setText(convertedDate);
+
         if (message.get(ParseConstants.KEY_FILE_TYPE).equals(ParseConstants.TYPE_IMAGE)) {
             holder.iconImageView.setImageResource(R.drawable.ic_photo);
         }
@@ -55,6 +65,7 @@ public class MessageAdapter extends ArrayAdapter<ParseObject> {
     private static class ViewHolder {
         ImageView iconImageView;
         TextView name_label;
+        TextView time_label;
     }
 
     public void refill(List<ParseObject> messages) {

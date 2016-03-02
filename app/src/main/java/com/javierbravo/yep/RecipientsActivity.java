@@ -87,7 +87,7 @@ public class RecipientsActivity extends ListActivity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Toast.makeText(RecipientsActivity.this, "Mensaje Enviado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecipientsActivity.this, R.string.sended_message_text, Toast.LENGTH_SHORT).show();
                 } else {
                     showUserError();
                 }

@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                     case 3:
                         Intent chooseVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
                         chooseVideoIntent.setType("video/*");
-                        Toast.makeText(getApplicationContext(), "Videos\'s duration shouldn\'t be longer than 10s", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.video_duration_error, Toast.LENGTH_LONG).show();
                         startActivityForResult(chooseVideoIntent, PICK_VIDEO_REQUEST);
                         break;
                 }

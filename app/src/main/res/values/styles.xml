@@ -11,10 +11,23 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+
         <item name="android:editTextBackground">@drawable/appwave_edit_text_holo_light</item>
         <item name="android:buttonStyle">@style/ButtonAppWave</item>
         <item name="android:imageButtonStyle">@style/ImageButtonAppWave</item>
+        <item name="android:listViewStyle">@style/_WaveTheme.BackgroundInbox</item>
+        <item name="android:gridViewStyle">@style/_WaveTheme.BackgroundInbox.GridView</item>
 
+    </style>
+
+
+    <style name="_WaveTheme.BackgroundInbox">
+        <item name="android:background">@color/background_inbox</item>
+        <item name="android:divider">@null</item>
+    </style>
+
+    <style name="_WaveTheme.BackgroundInbox.GridView">
+        <item name="android:padding">@dimen/user_grid_spacing</item>
     </style>
 
     <style name="WaveTheme.NoActionBar">

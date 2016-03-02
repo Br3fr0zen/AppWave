@@ -4,13 +4,16 @@
     android:layout_height="match_parent"
     tools:context="com.javierbravo.yep.MainActivity$PlaceholderFragment">
 
-    <ListView
-        android:id="@android:id/list"
+    <GridView
+        android:id="@+id/friendsGrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        />
+        android:numColumns="3"
+        android:horizontalSpacing="@dimen/user_grid_spacing"
+        android:verticalSpacing="@dimen/user_grid_spacing"
+        android:clipToPadding="false"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

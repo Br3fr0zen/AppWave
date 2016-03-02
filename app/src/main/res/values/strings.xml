@@ -29,6 +29,10 @@
     <string name="error_file_message">An error has occured with the selected file,please choose another file</string>
     <string name="error_file_message_title">Error, can\'t send this file</string>
     <string name="error_load_users">Error, can\'t load user list</string>
+    <string name="content_desc_message_icon">Message icon</string>
+    <string name="user_avatar">User avatar</string>
+    <string name="video_duration_error">Videos\'s duration shouldn\'t be longer than 10s</string>
+    <string name="sended_message_text">Message sent</string>
     <string-array name="camera_choices">
         <item name="choice_photo">Take a picture</item>
         <item name="choice_video">Tap a video</item>

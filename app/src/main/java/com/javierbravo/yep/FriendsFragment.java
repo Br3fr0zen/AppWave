@@ -1,6 +1,7 @@
 package com.javierbravo.yep;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -25,7 +26,7 @@ import java.util.List;
  * Created by manu on 29/01/2016.
  */
 
-public class FriendsFragment extends ListFragment {
+public class FriendsFragment extends Fragment {
 
     protected static final String TAG = "Error";
 
@@ -42,15 +43,14 @@ public class FriendsFragment extends ListFragment {
     public String[] emails;
     public String email;*/
 
-    protected ArrayAdapter<String> adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_friends, container,
                 false);
-        //mGrid = (GridView) rootView.findViewById(R.id.fGrid);
+        mGrid = (GridView) rootView.findViewById(R.id.friendsGrid);
         emptyText = (TextView) rootView.findViewById(android.R.id.empty);
-        emptyText.setVisibility(View.GONE);
+        mGrid.setEmptyView(emptyText);
         return rootView;
     }
 
@@ -60,8 +60,6 @@ public class FriendsFragment extends ListFragment {
 
         mCurrentUser = ParseUser.getCurrentUser();
         mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
-
-        mFriendsRelation.remove(mCurrentUser);
 
         ParseQuery<ParseUser> query = mFriendsRelation.getQuery();
         query.orderByAscending(ParseConstants.KEY_USERNAME);
@@ -74,17 +72,22 @@ public class FriendsFragment extends ListFragment {
                     usernames = new String[mUsers.size()];
                     int i = 0;
                     for (ParseUser user : mUsers) {
-                        if (mCurrentUser.equals(user.getUsername())) {
-
-                        } else {
-                            usernames[i] = user.getUsername();
-                            i++;
-                        }
+                        usernames[i] = user.getUsername();
+                        i++;
                     }
 
-                    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, usernames);
-                    setListAdapter(adapter);
-                    getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
+                    if(mGrid.getAdapter() == null){
+                        UserAdapter adapter = new UserAdapter(getActivity(),mUsers);
+                        mGrid.setAdapter(adapter);
+                    } else {
+                        ((UserAdapter)mGrid.getAdapter()).refill(mUsers);
+                    }
+
+                   // ArrayAdapter <String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, usernames);
+                    UserAdapter adapter = new UserAdapter(getActivity(),mUsers);
+                    mGrid.setAdapter(adapter);
+                    //getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
+
 
                 } else {
                     showUserError(e);
@@ -124,27 +127,5 @@ public class FriendsFragment extends ListFragment {
                     }else{
                         empty.setVisibility(View.VISIBLE);
                     }
-
-      AÑADIR AL XML DENTRO DEL RELATIVE LAYOUT CUANDO SE IMPLEMENTE EL GRID
-
-      <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <GridView
-            android:layout_width="match_parent"
-            android:layout_height="515dp"
-            android:id="@+id/fGrid"
-            android:numColumns="3"
-            android:scrollbars="vertical"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:horizontalSpacing="10dp"
-            android:verticalSpacing="10dp"
-            android:layout_margin="10dp"
-            android:gravity="center" />
-
-    </LinearLayout>
-
     */
 }

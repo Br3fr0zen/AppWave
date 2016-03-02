@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -45,6 +46,7 @@ public class InBoxFragment extends ListFragment {
                 false);
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.SwipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+        mSwipeRefreshLayout.setColorSchemeColors(R.color.swipeRefresh1, R.color.swipeRefresh2, R.color.swipeRefresh3, R.color.swipeRefresh4);
 
         return rootView;
     }
@@ -52,31 +54,36 @@ public class InBoxFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+        retrieveMessages();
+    }
 
-        messages = new ArrayList<>();
-        adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, messages);
-        setListAdapter(adapter);
-
+    private void retrieveMessages() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(ParseConstants.CLASS_MESSAGES);
         query.whereEqualTo(ParseConstants.KEY_RECIPIENT_IDS, ParseUser.getCurrentUser().getObjectId());
         query.addDescendingOrder(ParseConstants.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<ParseObject>() {
 
             @Override
-            public void done(List<ParseObject> messages, com.parse.ParseException e) {
-
+            public void done(List<ParseObject> messages, ParseException e) {
                 if (mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
 
                 if (e == null) {
                     mMessage = messages;
-
+                    String[] usernames =  new String[mMessage.size()];
+                    int i = 0;
                     for (ParseObject message : mMessage) {
-                        adapter.add(message.getString(ParseConstants.KEY_SENDER_NAME));
+                        usernames[i] = message.getString(ParseConstants.KEY_SENDER_NAME);
+                        i++;
                     }
-                    MessageAdapter mssgAdapter = new MessageAdapter(getListView().getContext(), mMessage);
-                    setListAdapter(mssgAdapter);
+                    if (getListView().getAdapter() == null) {
+                        MessageAdapter adapterMsg = new MessageAdapter(getListView().getContext(), mMessage);
+                        setListAdapter(adapterMsg);
+                    } else {
+                        ((MessageAdapter)getListView().getAdapter()).refill(mMessage);
+                    }
+
                 } else {
                     showUserError(e);
                 }
@@ -131,7 +138,8 @@ public class InBoxFragment extends ListFragment {
     protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            onResume();
+            retrieveMessages();
+            //onResume();
         }
     };
 }
