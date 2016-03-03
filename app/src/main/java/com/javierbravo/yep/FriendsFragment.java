@@ -3,6 +3,7 @@ package com.javierbravo.yep;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ public class FriendsFragment extends Fragment {
     protected GridView mGrid;
     protected TextView emptyText;
     protected String[] usernames;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     /*
     -> Grid view??
@@ -51,6 +53,10 @@ public class FriendsFragment extends Fragment {
         mGrid = (GridView) rootView.findViewById(R.id.friendsGrid);
         emptyText = (TextView) rootView.findViewById(android.R.id.empty);
         mGrid.setEmptyView(emptyText);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.SwipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+        mSwipeRefreshLayout.setColorSchemeColors(R.color.swipeRefresh1, R.color.swipeRefresh2, R.color.swipeRefresh3, R.color.swipeRefresh4);
+
         return rootView;
     }
 
@@ -67,6 +73,9 @@ public class FriendsFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List users, ParseException e) {
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (e == null) {
                     mUsers = users;
                     usernames = new String[mUsers.size()];
@@ -117,15 +126,10 @@ public class FriendsFragment extends Fragment {
         alert.show();
     }
 
-    //Revisar cuando lleguemos al grid view.
-    /*CustomGrid adapter = new CustomGrid(getActivity(), usernames , emails, images);
-                    grid.setAdapter(adapter);
-                    getActivity().setProgressBarIndeterminateVisibility(false);
-                    if(mFriends.size()>0){
-                        // Log.i("FriendsFragment.","Empty array.");
-                        empty.setVisibility(View.INVISIBLE);
-                    }else{
-                        empty.setVisibility(View.VISIBLE);
-                    }
-    */
+    protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            onResume();
+        }
+    };
 }

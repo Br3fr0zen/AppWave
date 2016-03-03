@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.javierbravo.yep.MainActivity$PlaceholderFragment"
-    style="@android:style/Theme.Holo.Light">
+    tools:context="com.javierbravo.yep.MainActivity$PlaceholderFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/SwipeRefreshLayout"
@@ -12,34 +11,22 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true">
 
-        <GridView
-            android:id="@+id/friendsGrid"
+        <ListView
+            android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:numColumns="3"
-            android:horizontalSpacing="@dimen/user_grid_spacing"
-            android:verticalSpacing="@dimen/user_grid_spacing"
-            android:clipToPadding="false" />
-
+            android:paddingBottom="@dimen/inbox_vertical_margin"
+            android:textSize="22.5sp"
+            android:clipToPadding="false"/>
     </android.support.v4.widget.SwipeRefreshLayout>
-
-
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible"/>
 
     <TextView
         android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/empty_friends_label" />
+        android:textSize="22.5sp"
+        android:text="@string/empty_inbox_label" />
+
 </RelativeLayout>

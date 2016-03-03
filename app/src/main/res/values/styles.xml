@@ -4,7 +4,7 @@
 
     <style name="WaveTheme" parent="@style/_WaveTheme" />
 
-    <style name="_WaveTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="_WaveTheme" parent="@android:style/Theme.Holo.Light">
 
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -16,8 +16,8 @@
         <item name="android:buttonStyle">@style/ButtonAppWave</item>
         <item name="android:imageButtonStyle">@style/ImageButtonAppWave</item>
         <item name="android:listViewStyle">@style/_WaveTheme.BackgroundInbox</item>
+        <item name="android:actionBarStyle">@color/appwave_color</item>
         <item name="android:gridViewStyle">@style/_WaveTheme.BackgroundInbox.GridView</item>
-
     </style>
 
 
@@ -35,7 +35,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+
+    </style>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="ButtonAppWave" parent="android:Widget.Holo.Light.Button">

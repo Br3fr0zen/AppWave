@@ -23,5 +23,6 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textColor="#ffffff"
+        android:textSize="22.5sp"
         android:layout_below="@+id/userImageView"/>
 </RelativeLayout>

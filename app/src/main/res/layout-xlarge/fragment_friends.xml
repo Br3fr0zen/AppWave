@@ -23,6 +23,7 @@
             android:numColumns="3"
             android:horizontalSpacing="@dimen/user_grid_spacing"
             android:verticalSpacing="@dimen/user_grid_spacing"
+            android:textSize="22.5sp"
             android:clipToPadding="false" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
@@ -41,5 +42,6 @@
         android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textSize="22.5sp"
         android:text="@string/empty_friends_label" />
 </RelativeLayout>

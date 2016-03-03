@@ -26,6 +26,6 @@ public class ViewImageActivity extends Activity {
             public void run() {
                 finish();
             }
-        }, 5000);
+        }, 10000);
     }
 }
